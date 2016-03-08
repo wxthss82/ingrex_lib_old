@@ -13,10 +13,14 @@ def main():
         # 'minLatE6':39986831,
         # 'maxLngE6':116311303,
         # 'maxLatE6':39990941,
-        'minLngE6':115523545,
-        'minLatE6':39418597,
-        'maxLngE6':117005055,
-        'maxLatE6':40404834,
+        # 'minLngE6':115523545,
+        # 'minLatE6':39418597,
+        # 'maxLngE6':117005055,
+        # 'maxLatE6':40404834,
+        'minLngE6':72004000,
+        'minLatE6':829300,
+        'maxLngE6':137834700,
+        'maxLatE6':55827100,
     }
     with open('cookies') as cookies:
         cookies = cookies.read().strip()
@@ -46,7 +50,8 @@ def main():
             mints = result[0][1] + 1
         for item in result[::-1]:
             message = ingrex.Message(item)
-            print(u'{} {}'.format(message.time, message.text.decode('unicode-escape')))
+            print(mints)
+            # print(u'{} {}'.format(message.time, message.text.decode('unicode-escape')))
             conn.execute("INSERT INTO MESSAGE (GUID,TIME,PLAYER,TEAM,LAT,LNG,BODY) \
                          VALUES (?,?,?,?,?,?,?);""", (message.guid,
                                                     message.time,
@@ -58,7 +63,7 @@ def main():
             conn.commit()
             print "Records created successfully";
 
-        time.sleep(10)
+        time.sleep(2)
     conn.close()
 
 if __name__ == '__main__':
