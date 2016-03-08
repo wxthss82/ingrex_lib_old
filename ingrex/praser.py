@@ -1,4 +1,5 @@
 "Ingrex praser deal with message"
+import re
 from datetime import datetime, timedelta
 
 class Message(object):
@@ -11,5 +12,18 @@ class Message(object):
         time = datetime.fromtimestamp(seconds) + timedelta(milliseconds=millis)
         self.time = time.strftime('%Y/%m/%d %H:%M:%S:%f')[:-3]
         self.text = raw_msg[2]['plext']['text']
+        self.markup = raw_msg[2]['plext']['markup']
+        self.player = "__ADA__"
+        if self.markup:
+            self.player = self.markup[0][1]['plain']
+        self.markup = ''.join(str(e) for e in self.markup)
+        # self.portal = self.markup[2]
+
+        self.lat = "-1"
+        self.lng = "-1"
+        if re.findall(r'u\'latE6\': (\d*)', self.markup):
+            self.lat = re.findall(r'u\'latE6\': (\d*)', self.markup)[0]
+            self.lng = re.findall(r'u\'lngE6\': (\d*)', self.markup)[0]
+
         self.type = raw_msg[2]['plext']['plextType']
         self.team = raw_msg[2]['plext']['team']
