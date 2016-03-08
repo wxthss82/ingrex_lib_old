@@ -39,28 +39,26 @@ def main():
     mints = -1
 
     id = 1
-    with open("result.txt", "a") as myfile:
-        while True:
-            intel = ingrex.Intel(cookies, field)
-            result = intel.fetch_msg(mints)
-            if result:
-                mints = result[0][1] + 1
-            for item in result[::-1]:
-                message = ingrex.Message(item)
-                print(u'{} {}'.format(message.time, message.text))
-                myfile.writelines(u'{};{};{};{};{};{};{}\n'.format(message.time, message.player, message.team, message.lat, message.lng, message.text, message.markup))
-                conn.execute("INSERT INTO MESSAGE (GUID,TIME,PLAYER,TEAM,LAT,LNG,BODY) \
-                             VALUES (?,?,?,?,?,?,?);""", (message.guid,
-                                                        message.time,
-                                                        message.player,
-                                                        message.team,
-                                                        message.lat,
-                                                        message.lng,
-                                                        message.text));
-                conn.commit()
-                print "Records created successfully";
+    while True:
+        intel = ingrex.Intel(cookies, field)
+        result = intel.fetch_msg(mints)
+        if result:
+            mints = result[0][1] + 1
+        for item in result[::-1]:
+            message = ingrex.Message(item)
+            print(u'{} {}'.format(message.time, message.text.decode('unicode-escape')))
+            conn.execute("INSERT INTO MESSAGE (GUID,TIME,PLAYER,TEAM,LAT,LNG,BODY) \
+                         VALUES (?,?,?,?,?,?,?);""", (message.guid,
+                                                    message.time,
+                                                    message.player,
+                                                    message.team,
+                                                    message.lat,
+                                                    message.lng,
+                                                    message.text));
+            conn.commit()
+            print "Records created successfully";
 
-            time.sleep(10)
+        time.sleep(10)
     conn.close()
 
 if __name__ == '__main__':
