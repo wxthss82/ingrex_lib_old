@@ -2,6 +2,9 @@
 import re
 from datetime import datetime, timedelta
 
+import pytz
+
+
 class Message(object):
     "Message object"
     def __init__(self, raw_msg):
@@ -9,7 +12,8 @@ class Message(object):
         self.guid = raw_msg[0]
         self.timestamp = raw_msg[1]
         seconds, millis = divmod(raw_msg[1], 1000)
-        time = datetime.fromtimestamp(seconds) + timedelta(milliseconds=millis)
+        tz = pytz.timezone('Asia/Shanghai')
+        time = datetime.fromtimestamp(seconds, tz) + timedelta(milliseconds=millis)
         self.time = time.strftime('%Y/%m/%d %H:%M:%S:%f')[:-3]
         self.text = raw_msg[2]['plext']['text']
         self.markup = raw_msg[2]['plext']['markup']
