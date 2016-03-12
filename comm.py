@@ -1,4 +1,6 @@
 "COMM monitor"
+import traceback
+
 import ingrex
 import time
 import sys
@@ -44,26 +46,39 @@ def main():
 
     id = 1
     while True:
-        intel = ingrex.Intel(cookies, field)
-        result = intel.fetch_msg(mints)
-        if result:
-            mints = result[0][1] + 1
-        for item in result[::-1]:
-            message = ingrex.Message(item)
-            print(mints)
-            # print(u'{} {}'.format(message.time, message.text.decode('unicode-escape')))
-            conn.execute("INSERT INTO MESSAGE (GUID,TIME,PLAYER,TEAM,LAT,LNG,BODY) \
-                         VALUES (?,?,?,?,?,?,?);""", (message.guid,
-                                                    message.time,
-                                                    message.player,
-                                                    message.team,
-                                                    message.lat,
-                                                    message.lng,
-                                                    message.text));
-            conn.commit()
-            print "Records created successfully";
+        try:
+            intel = ingrex.Intel(cookies, field)
+            result = intel.fetch_msg(mints)
+            if result:
+                mints = result[0][1] + 1
+            for item in result[::-1]:
+                message = ingrex.Message(item)
+                print(mints)
+                # print(u'{} {}'.format(message.time, message.text.decode('unicode-escape')))
+                conn.execute("INSERT INTO MESSAGE (GUID,TIME,PLAYER,TEAM,LAT,LNG,BODY) \
+                             VALUES (?,?,?,?,?,?,?);""", (message.guid,
+                                                        message.time,
+                                                        message.player,
+                                                        message.team,
+                                                        message.lat,
+                                                        message.lng,
+                                                        message.text));
+                conn.commit()
+                print "Records created successfully";
 
-        time.sleep(2)
+            time.sleep(2)
+        except Exception, err:
+            try:
+                exc_info = sys.exc_info()
+
+                try:
+                    raise TypeError("Again !?!")
+                except:
+                    pass
+
+            finally:
+                traceback.print_exception(*exc_info)
+                del exc_info
     conn.close()
 
 if __name__ == '__main__':
