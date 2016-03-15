@@ -28,41 +28,42 @@ def main():
     }
 
 
-    option = webdriver.ChromeOptions()
-    option.binary_location = "~/tmp/Temp/chromedriver"
     driver = webdriver.Chrome("/Users/wangxin/tmp/Temp/chromedriver")
-    # driver = webdriver.PhantomJS();
-    driver.set_window_size(1024, 768)
-    driver.get('http://www.ingress.com/intel')
-    link = driver.find_elements_by_tag_name('a')[0].get_attribute('href')
-    driver.get(link)
-    time.sleep(1)
-    driver.find_element_by_id('Email').send_keys("wxin08@gmail.com")
-    driver.find_element_by_css_selector('#next').click()
-    driver.set_page_load_timeout(3)
-    time.sleep(1)
-    driver.save_screenshot('./shot.png')
-    time.sleep(2)
-    driver.find_element_by_id('Passwd').send_keys("Dr.wxthss82")
-    driver.save_screenshot('./shot2.png')
-    time.sleep(5)
-    driver.find_element_by_css_selector('#signIn').click()
-    driver.set_page_load_timeout(20)
-    driver.set_script_timeout(20)
-    # driver.find_element_by_id('gaia_loginform').submit()
-    time.sleep(10)
-    driver.save_screenshot('./shot3.png')
-    print ('Validating login credentials...')
-    cookie = driver.get_cookies()
-    f = open('./cookies2', 'w+')
-    # for v in cookies:
-    #     f.writelines(v)
-    f.write('SACSID=')
-    f.write(cookie[6]["value"])
-    f.write('; csrftoken=')
-    f.write(cookie[5]["value"])
-    f.write('; ingress.intelmap.shflt=viz; ingress.intelmap.lat=40.0000000000000; ingress.intelmap.lng=120.00000000000000; ingress.intelmap.zoom=16')
-    f.close()
+    try:
+        # driver = webdriver.PhantomJS();
+        driver.set_window_size(1024, 768)
+        driver.get('http://www.ingress.com/intel')
+        link = driver.find_elements_by_tag_name('a')[0].get_attribute('href')
+        driver.get(link)
+        time.sleep(1)
+        driver.find_element_by_id('Email').send_keys("wxin08@gmail.com")
+        driver.find_element_by_css_selector('#next').click()
+        driver.set_page_load_timeout(3)
+        time.sleep(1)
+        driver.save_screenshot('./shot.png')
+        time.sleep(2)
+        driver.find_element_by_id('Passwd').send_keys("Dr.wxthss82")
+        driver.save_screenshot('./shot2.png')
+        time.sleep(5)
+        driver.find_element_by_css_selector('#signIn').click()
+        driver.set_page_load_timeout(20)
+        driver.set_script_timeout(20)
+        # driver.find_element_by_id('gaia_loginform').submit()
+        time.sleep(10)
+        driver.save_screenshot('./shot3.png')
+        print ('Validating login credentials...')
+        cookie = driver.get_cookies()
+        f = open('./cookies2', 'w+')
+        # for v in cookies:
+        #     f.writelines(v)
+        f.write('SACSID=')
+        f.write(cookie[6]["value"])
+        f.write('; csrftoken=')
+        f.write(cookie[5]["value"])
+        f.write('; ingress.intelmap.shflt=viz; ingress.intelmap.lat=40.0000000000000; ingress.intelmap.lng=120.00000000000000; ingress.intelmap.zoom=16')
+        f.close()
+    finally:
+        driver.close()
 
 
     with open('cookies2') as cookies:
@@ -120,7 +121,9 @@ def main():
             finally:
                 traceback.print_exception(*exc_info)
                 del exc_info
+
     conn.close()
+
 
 if __name__ == '__main__':
     main()
