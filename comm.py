@@ -6,6 +6,8 @@ import time
 import sys
 import sqlite3
 
+from selenium import webdriver
+
 def main():
     "main function"
     reload(sys)
@@ -24,6 +26,37 @@ def main():
         # 'maxLngE6':137834700,
         # 'maxLatE6':55827100,
     }
+
+
+    option = webdriver.ChromeOptions()
+    option.binary_location = "~/tmp/Temp/chromedriver"
+    driver = webdriver.Chrome("/Users/wangxin/tmp/Temp/chromedriver")
+    driver.set_window_size(1024, 768)
+    driver.get('http://www.ingress.com/intel')
+    link = driver.find_elements_by_tag_name('a')[0].get_attribute('href')
+    driver.get(link)
+    time.sleep(1)
+    driver.find_element_by_id('Email').send_keys("wxin08@gmail.com")
+    driver.find_element_by_css_selector('#next').click()
+    driver.set_page_load_timeout(3)
+    time.sleep(1)
+    driver.save_screenshot('./shot.png')
+    time.sleep(2)
+    driver.find_element_by_id('Passwd').send_keys("Dr.wxthss82")
+    driver.save_screenshot('./shot2.png')
+    driver.find_element_by_css_selector('#signIn').click()
+    driver.set_page_load_timeout(20)
+    driver.set_script_timeout(20)
+    # driver.find_element_by_id('gaia_loginform').submit()
+    time.sleep(5)
+    driver.save_screenshot('./shot3.png')
+    print ('Validating login credentials...')
+    cookies = driver.get_cookies()
+    f = open('./cookies', 'rw')
+    for v in cookies:
+        f.writelines(v)
+
+
     with open('cookies') as cookies:
         cookies = cookies.read().strip()
 
