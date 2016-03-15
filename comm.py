@@ -32,7 +32,7 @@ def main():
     while (start == 1):
         #get the chrome webdriver:
         #https://sites.google.com/a/chromium.org/chromedriver/downloads
-        driver = webdriver.Chrome("/Users/wangxin/tmp/Temp/chromedriver")
+        driver = webdriver.Chrome("./chromedriver_linux64")
         try:
             # driver = webdriver.PhantomJS();
             driver.set_window_size(1024, 768)
@@ -76,7 +76,7 @@ def main():
 
         conn = sqlite3.connect('test.db')
 
-    
+
         print "Opened database successfully";
 
         conn.execute('''CREATE TABLE IF NOT EXISTS MESSAGE
