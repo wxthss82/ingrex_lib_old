@@ -28,6 +28,8 @@ def main():
     }
 
 
+    #get the chrome webdriver:
+    #https://sites.google.com/a/chromium.org/chromedriver/downloads
     driver = webdriver.Chrome("/Users/wangxin/tmp/Temp/chromedriver")
     try:
         # driver = webdriver.PhantomJS();
