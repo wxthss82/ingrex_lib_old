@@ -32,7 +32,7 @@ def main():
     while (start == 1):
         #get the chrome webdriver:
         #https://sites.google.com/a/chromium.org/chromedriver/downloads
-        driver = webdriver.PhantomJS('./phantomjs-2.1.1-linux-x86_64/bin/phantomjs')
+        driver = webdriver.Chrome("./chromedriver_linux64")
         try:
             # driver = webdriver.PhantomJS();
             driver.set_window_size(1024, 768)
