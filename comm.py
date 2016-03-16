@@ -46,7 +46,7 @@ def main():
             time.sleep(1)
             driver.save_screenshot('./shot.png')
             time.sleep(2)
-            driver.find_element_by_id('Passwd').send_keys("Dr.wxthss82")
+            driver.find_element_by_id('Passwd').send_keys("xin86996527")
             driver.save_screenshot('./shot2.png')
             time.sleep(5)
             driver.find_element_by_css_selector('#signIn').click()
