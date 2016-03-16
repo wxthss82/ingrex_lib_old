@@ -1,5 +1,7 @@
 "COMM monitor"
 import traceback
+from pyvirtualdisplay import Display
+
 
 import ingrex
 import time
@@ -32,6 +34,8 @@ def main():
     while (start == 1):
         #get the chrome webdriver:
         #https://sites.google.com/a/chromium.org/chromedriver/downloads
+        display = Display(visible=0, size=(800, 600))
+        display.start()
         service_log_path = "{}/chromedriver.log".format(".")
         service_args = ['--verbose']
         driver = webdriver.Chrome("./chromedriver_linux64",
@@ -41,6 +45,7 @@ def main():
             # driver = webdriver.PhantomJS();
             driver.set_window_size(1024, 768)
             driver.get('http://www.ingress.com/intel')
+            print driver.title
             link = driver.find_elements_by_tag_name('a')[0].get_attribute('href')
             driver.get(link)
             time.sleep(1)
@@ -71,7 +76,9 @@ def main():
             f.write('; ingress.intelmap.shflt=viz; ingress.intelmap.lat=40.0000000000000; ingress.intelmap.lng=120.00000000000000; ingress.intelmap.zoom=16')
             f.close()
         finally:
-            driver.close()
+            # driver.close()
+            driver.quit()
+            display.stop()
 
         start = 0
 
