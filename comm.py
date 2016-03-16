@@ -66,6 +66,8 @@ def main():
             driver.save_screenshot('./shot3.png')
             print ('Validating login credentials...')
             cookie = driver.get_cookies()
+            for i in range(0, 6):
+                print(cookie[i]["value"])
             f = open('./cookies2', 'w+')
             # for v in cookies:
             #     f.writelines(v)
