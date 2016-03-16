@@ -66,15 +66,15 @@ def main():
             driver.save_screenshot('./shot3.png')
             print ('Validating login credentials...')
             cookie = driver.get_cookies()
-            for i in range(0, 6):
-                print(cookie[i]["value"])
+            # for i in range(0, 6):
+            #     print(cookie[i]["value"])
             f = open('./cookies2', 'w+')
             # for v in cookies:
             #     f.writelines(v)
             f.write('SACSID=')
-            f.write(cookie[6]["value"])
+            f.write(cookie[2]["value"])
             f.write('; csrftoken=')
-            f.write(cookie[5]["value"])
+            f.write(cookie[3]["value"])
             f.write('; ingress.intelmap.shflt=viz; ingress.intelmap.lat=40.0000000000000; ingress.intelmap.lng=120.00000000000000; ingress.intelmap.zoom=16')
             f.close()
         finally:
