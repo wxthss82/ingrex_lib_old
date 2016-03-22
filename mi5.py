@@ -22,7 +22,7 @@ def main():
     display.start()
     service_log_path = "{}/chromedriver.log".format(".")
     service_args = ['--verbose']
-    i = 1
+    i = 7
     while (i <= 44):
         driver = webdriver.Chrome("./chromedriver_mac32",
         service_args=service_args,
@@ -45,7 +45,10 @@ def main():
         if driver.find_elements_by_class_name("J_stepItem"):
             driver.find_elements_by_class_name("J_stepItem")[0].click()
             driver.find_elements_by_class_name("J_stepItem")[2].click()
+            driver.find_elements_by_class_name("J_packageItem")[4].click()
+            driver.find_elements_by_class_name("pro-choose-result")[0].click()
         i+=1
+    time.sleep(10000)
 
 if __name__ == '__main__':
     main()
