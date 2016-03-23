@@ -1,6 +1,7 @@
 "COMM monitor"
 import traceback
 from pyvirtualdisplay import Display
+import platform
 
 
 import ingrex
@@ -34,11 +35,20 @@ def main():
     while (start == 1):
         #get the chrome webdriver:
         #https://sites.google.com/a/chromium.org/chromedriver/downloads
-        display = Display(visible=0, size=(800, 600))
-        display.start()
+        print platform.system()
+        if not platform.system() == "Windows":
+            display = Display(visible=0, size=(800, 600))
+            display.start()
         service_log_path = "{}/chromedriver.log".format(".")
         service_args = ['--verbose']
-        driver = webdriver.Chrome("./chromedriver_linux64",
+        chromedriver = ""
+        if platform.system() == "Windows":
+            chromedriver = "./chromedriver_win32.exe"
+        elif platform.system() == "Linux":
+            chromedriver = "./chromedriver_linux64"
+        elif platform.system() == "Darwin":
+            chromedriver = "./chromedriver_mac32"
+        driver = webdriver.Chrome(chromedriver,
         service_args=service_args,
         service_log_path=service_log_path)
         try:
