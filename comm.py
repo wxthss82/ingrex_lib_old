@@ -34,71 +34,65 @@ def main():
     start = 1
 
     while (start == 1):
-        # for virtual display, used for the system which doesn't have user interface.
-        print platform.system()
-        if platform.system() == "Linux":
-            display = Display(visible=0, size=(800, 600))
-            display.start()
-
-        # used for generate debug log
-        service_log_path = "{}/chromedriver.log".format(".")
-        service_args = ['--verbose']
-        chromedriver = ""
-        if platform.system() == "Windows":
-            chromedriver = "./chromedriver_win32.exe"
-        elif platform.system() == "Linux":
-            chromedriver = "./chromedriver_linux64"
-        elif platform.system() == "Darwin":
-            chromedriver = "./chromedriver_mac32"
-
-
-        # Retrieve the agent info.
-        with open('AgentInfo.txt') as f:
-            lines = f.readlines()
-        username = lines[0].replace("\n", "")
-        password = lines[1].replace("\n", "")
-
-
-        # create chrome driver
-        # get the chrome webdriver:
-        # https://sites.google.com/a/chromium.org/chromedriver/downloads
-        driver = webdriver.Chrome(chromedriver,
-            service_args=service_args,
-            service_log_path=service_log_path)
-        # driver = webdriver.PhantomJS();
         try:
+            # for virtual display, used for the system which doesn't have user interface.
+            # print platform.system()
+            if platform.system() == "Linux":
+                display = Display(visible=0, size=(800, 600))
+                display.start()
+
+            # used for generate debug log
+            service_log_path = "{}/chromedriver.log".format(".")
+            service_args = ['--verbose']
+            chromedriver = ""
+            if platform.system() == "Windows":
+                chromedriver = "./chromedriver_win32.exe"
+            elif platform.system() == "Linux":
+                chromedriver = "./chromedriver_linux64"
+            elif platform.system() == "Darwin":
+                chromedriver = "./chromedriver_mac32"
+
+
+            # Retrieve the agent info.
+            with open('AgentInfo.txt') as f:
+                lines = f.readlines()
+            username = lines[0].replace("\n", "")
+            password = lines[1].replace("\n", "")
+
+
+            # create chrome driver
+            # get the chrome webdriver:
+            # https://sites.google.com/a/chromium.org/chromedriver/downloads
+            driver = webdriver.Chrome(chromedriver,
+                service_args=service_args,
+                service_log_path=service_log_path)
+            # driver = webdriver.PhantomJS();
             driver.set_window_size(1024, 768)
             driver.get('http://www.ingress.com/intel')
-            print driver.title
+            # print driver.title
 
             # get the login page
             link = driver.find_elements_by_tag_name('a')[0].get_attribute('href')
             driver.get(link)
-            time.sleep(1)
 
             # simulate manual login
+            time.sleep(1)
             driver.find_element_by_id('Email').send_keys(username)
             driver.find_element_by_css_selector('#next').click()
-            driver.set_page_load_timeout(1000)
+            driver.set_page_load_timeout(20)
             time.sleep(1)
-            driver.save_screenshot('./shot.png')
-            time.sleep(2)
             driver.find_element_by_id('Passwd').send_keys(password)
-            driver.save_screenshot('./shot2.png')
-            time.sleep(5)
             driver.find_element_by_css_selector('#signIn').click()
             driver.set_page_load_timeout(20)
             driver.set_script_timeout(20)
             # driver.find_element_by_id('gaia_loginform').submit()
-            time.sleep(25)
-            driver.save_screenshot('./shot3.png')
+            # time.sleep(25)
 
             # get the cookies
-            print ('Validating login credentials...')
             cookie = driver.get_cookies()
             for i in range(0, 6):
                 print(cookie[i]["value"])
-            f = open('./cookies2', 'w+')
+            f = open('./cookies', 'w+')
             # for v in cookies:
             #     f.writelines(v)
             f.write('SACSID=')
@@ -109,9 +103,9 @@ def main():
             f.close()
         finally:
             # driver.close()
-            driver.quit()
             if platform.system() == "Linux":
                 display.stop()
+            driver.quit()
 
         start = 0
 
