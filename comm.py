@@ -51,6 +51,14 @@ def main():
         elif platform.system() == "Darwin":
             chromedriver = "./chromedriver_mac32"
 
+
+        # Retrieve the agent info.
+        with open('AgentInfo.txt') as f:
+            lines = f.readlines()
+        username = lines[0].replace("\n", "")
+        password = lines[1].replace("\n", "")
+
+
         # create chrome driver
         # get the chrome webdriver:
         # https://sites.google.com/a/chromium.org/chromedriver/downloads
@@ -69,27 +77,27 @@ def main():
             time.sleep(1)
 
             # simulate manual login
-            driver.find_element_by_id('Email').send_keys("wxin08@gmail.com")
+            driver.find_element_by_id('Email').send_keys(username)
             driver.find_element_by_css_selector('#next').click()
             driver.set_page_load_timeout(1000)
             time.sleep(1)
             driver.save_screenshot('./shot.png')
             time.sleep(2)
-            driver.find_element_by_id('Passwd').send_keys("xin86996527")
+            driver.find_element_by_id('Passwd').send_keys(password)
             driver.save_screenshot('./shot2.png')
-            time.sleep(10)
+            time.sleep(5)
             driver.find_element_by_css_selector('#signIn').click()
             driver.set_page_load_timeout(20)
             driver.set_script_timeout(20)
             # driver.find_element_by_id('gaia_loginform').submit()
-            time.sleep(20)
+            time.sleep(25)
             driver.save_screenshot('./shot3.png')
 
             # get the cookies
             print ('Validating login credentials...')
             cookie = driver.get_cookies()
-            # for i in range(0, 6):
-            #     print(cookie[i]["value"])
+            for i in range(0, 6):
+                print(cookie[i]["value"])
             f = open('./cookies2', 'w+')
             # for v in cookies:
             #     f.writelines(v)
