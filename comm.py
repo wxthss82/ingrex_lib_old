@@ -42,8 +42,6 @@ def main():
                 display.start()
 
             # used for generate debug log
-            service_log_path = "{}/chromedriver.log".format(".")
-            service_args = ['--verbose']
             chromedriver = ""
             if platform.system() == "Windows":
                 chromedriver = "./chromedriver_win32.exe"
@@ -63,9 +61,7 @@ def main():
             # create chrome driver
             # get the chrome webdriver:
             # https://sites.google.com/a/chromium.org/chromedriver/downloads
-            driver = webdriver.Chrome(chromedriver,
-                service_args=service_args,
-                service_log_path=service_log_path)
+            driver = webdriver.Chrome(chromedriver)
             # driver = webdriver.PhantomJS();
             driver.set_window_size(1024, 768)
             driver.get('http://www.ingress.com/intel')
