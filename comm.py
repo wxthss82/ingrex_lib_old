@@ -71,18 +71,18 @@ def main():
             # simulate manual login
             driver.find_element_by_id('Email').send_keys("wxin08@gmail.com")
             driver.find_element_by_css_selector('#next').click()
-            driver.set_page_load_timeout(3)
+            driver.set_page_load_timeout(1000)
             time.sleep(1)
             driver.save_screenshot('./shot.png')
             time.sleep(2)
             driver.find_element_by_id('Passwd').send_keys("xin86996527")
             driver.save_screenshot('./shot2.png')
-            time.sleep(5)
+            time.sleep(10)
             driver.find_element_by_css_selector('#signIn').click()
             driver.set_page_load_timeout(20)
             driver.set_script_timeout(20)
             # driver.find_element_by_id('gaia_loginform').submit()
-            time.sleep(10)
+            time.sleep(20)
             driver.save_screenshot('./shot3.png')
 
             # get the cookies
@@ -102,7 +102,8 @@ def main():
         finally:
             # driver.close()
             driver.quit()
-            display.stop()
+            if platform.system() == "Linux":
+                display.stop()
 
         start = 0
 
