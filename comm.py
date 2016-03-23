@@ -30,15 +30,17 @@ def main():
         # 'maxLatE6':55827100,
     }
 
+    # start is used for retry when exception such as cookie expired occurs.
     start = 1
 
     while (start == 1):
-        #get the chrome webdriver:
-        #https://sites.google.com/a/chromium.org/chromedriver/downloads
+        # for virtual display, used for the system which doesn't have user interface.
         print platform.system()
-        if not platform.system() == "Windows":
+        if platform.system() == "Linux":
             display = Display(visible=0, size=(800, 600))
             display.start()
+
+        # used for generate debug log
         service_log_path = "{}/chromedriver.log".format(".")
         service_args = ['--verbose']
         chromedriver = ""
@@ -48,17 +50,25 @@ def main():
             chromedriver = "./chromedriver_linux64"
         elif platform.system() == "Darwin":
             chromedriver = "./chromedriver_mac32"
+
+        # create chrome driver
+        # get the chrome webdriver:
+        # https://sites.google.com/a/chromium.org/chromedriver/downloads
         driver = webdriver.Chrome(chromedriver,
-        service_args=service_args,
-        service_log_path=service_log_path)
+            service_args=service_args,
+            service_log_path=service_log_path)
+        # driver = webdriver.PhantomJS();
         try:
-            # driver = webdriver.PhantomJS();
             driver.set_window_size(1024, 768)
             driver.get('http://www.ingress.com/intel')
             print driver.title
+
+            # get the login page
             link = driver.find_elements_by_tag_name('a')[0].get_attribute('href')
             driver.get(link)
             time.sleep(1)
+
+            # simulate manual login
             driver.find_element_by_id('Email').send_keys("wxin08@gmail.com")
             driver.find_element_by_css_selector('#next').click()
             driver.set_page_load_timeout(3)
@@ -74,6 +84,8 @@ def main():
             # driver.find_element_by_id('gaia_loginform').submit()
             time.sleep(10)
             driver.save_screenshot('./shot3.png')
+
+            # get the cookies
             print ('Validating login credentials...')
             cookie = driver.get_cookies()
             # for i in range(0, 6):
@@ -97,19 +109,19 @@ def main():
         with open('cookies2') as cookies:
             cookies = cookies.read().strip()
 
+        # create database
         conn = sqlite3.connect('test.db')
-
 
         print "Opened database successfully";
 
         conn.execute('''CREATE TABLE IF NOT EXISTS MESSAGE
                (GUID TEXT PRIMARY KEY     NOT NULL,
-               TIME           TEXT    NOT NULL,
-               PLAYER           TEXT    NOT NULL,
-               TEAM           TEXT    NOT NULL,
-               LAT           TEXT    NOT NULL,
-               LNG           TEXT    NOT NULL,
-               BODY           TEXT    NOT NULL);''')
+               TIME             TEXT      NOT NULL,
+               PLAYER           TEXT      NOT NULL,
+               TEAM             TEXT      NOT NULL,
+               LAT              TEXT      NOT NULL,
+               LNG              TEXT      NOT NULL,
+               BODY             TEXT      NOT NULL);''')
         print "Table created successfully";
 
         mints = -1
@@ -124,6 +136,7 @@ def main():
                     message = ingrex.Message(item)
                     print(mints)
                     # print(u'{} {}'.format(message.time, message.text.decode('unicode-escape')))
+                    # insert into database
                     conn.execute("INSERT INTO MESSAGE (GUID,TIME,PLAYER,TEAM,LAT,LNG,BODY) \
                                  VALUES (?,?,?,?,?,?,?);""", (message.guid,
                                                             message.time,
