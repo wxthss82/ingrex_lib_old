@@ -76,25 +76,30 @@ def main():
             driver.find_element_by_id('Email').send_keys(username)
             driver.find_element_by_css_selector('#next').click()
             driver.set_page_load_timeout(20)
-            time.sleep(1)
+            time.sleep(2)
             driver.find_element_by_id('Passwd').send_keys(password)
             driver.find_element_by_css_selector('#signIn').click()
             driver.set_page_load_timeout(20)
             driver.set_script_timeout(20)
             # driver.find_element_by_id('gaia_loginform').submit()
-            # time.sleep(25)
+            time.sleep(25)
 
             # get the cookies
             cookie = driver.get_cookies()
-            for i in range(0, 6):
-                print(cookie[i]["value"])
+            for c in cookie:
+                print(c["value"])
+                if len(c["value"]) > 400:
+                    SACSID = c["value"]
+                if len(c["value"]) == 32:
+                    csrftoken = c["value"]
             f = open('./cookies', 'w+')
             # for v in cookies:
             #     f.writelines(v)
             f.write('SACSID=')
-            f.write(cookie[2]["value"])
+            # note: the cookie[2],[3] index number various between different browser.
+            f.write(SACSID)
             f.write('; csrftoken=')
-            f.write(cookie[3]["value"])
+            f.write(csrftoken)
             f.write('; ingress.intelmap.shflt=viz; ingress.intelmap.lat=40.0000000000000; ingress.intelmap.lng=120.00000000000000; ingress.intelmap.zoom=16')
             f.close()
         finally:
@@ -105,7 +110,7 @@ def main():
 
         start = 0
 
-        with open('cookies2') as cookies:
+        with open('cookies') as cookies:
             cookies = cookies.read().strip()
 
         # create database
