@@ -1,7 +1,7 @@
 import sqlite3
 
 def main():
-    conn = sqlite3.connect("test1.db")
+    conn = sqlite3.connect("message.db")
     c = conn.cursor()
     # queryPlayerLog(c, 'plopl666')
     # queryPlayer(c)

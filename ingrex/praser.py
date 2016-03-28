@@ -17,7 +17,7 @@ class Message(object):
         self.time = time.strftime('%Y/%m/%d %H:%M:%S:%f')[:-3]
         self.text = raw_msg[2]['plext']['text']
         self.markup = raw_msg[2]['plext']['markup']
-        self.player = self.markup[0][1]['plain']
+        self.player = self.markup[0][1]['plain'].replace(":", "")
         self.team = self.markup[0][1]['team']
         self.markup = ''.join(str(e) for e in self.markup)
         # self.portal = self.markup[2]

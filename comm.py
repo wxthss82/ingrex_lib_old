@@ -16,24 +16,19 @@ def main():
     reload(sys)
     sys.setdefaultencoding('utf-8')
     region = {
-        # 'minLngE6':116298171,
-        # 'minLatE6':39986831,
-        # 'maxLngE6':116311303,
-        # 'maxLatE6':39990941,
+        #  Beijing Region
         'minLngE6': 115523545,
         'minLatE6': 39418597,
         'maxLngE6': 117005055,
         'maxLatE6': 40404834,
+        #  China Region
         # 'minLngE6':72004000,
         # 'minLatE6':829300,
         # 'maxLngE6':137834700,
         # 'maxLatE6':55827100,
     }
 
-    # start is used for retry when exception such as cookie expired occurs.
-    start = 1
-
-    while start == 1:
+    while True:
         try:
             # for virtual display, used for the system which doesn't have user interface.
             # print platform.system()
@@ -107,8 +102,6 @@ def main():
                 display.stop()
             driver.quit()
 
-        start = 0
-
         with open('cookies') as cookies:
             cookies = cookies.read().strip()
 
@@ -166,7 +159,6 @@ def main():
                 finally:
                     traceback.print_exception(*exc_info)
                     del exc_info
-                    start = 1
                     break
 
         conn.close()
