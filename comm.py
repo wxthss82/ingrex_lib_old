@@ -3,7 +3,6 @@ import traceback
 from pyvirtualdisplay import Display
 import platform
 
-
 import ingrex
 import time
 import sys
@@ -11,19 +10,20 @@ import sqlite3
 
 from selenium import webdriver
 
+
 def main():
     "main function"
     reload(sys)
     sys.setdefaultencoding('utf-8')
-    field = {
+    region = {
         # 'minLngE6':116298171,
         # 'minLatE6':39986831,
         # 'maxLngE6':116311303,
         # 'maxLatE6':39990941,
-        'minLngE6':115523545,
-        'minLatE6':39418597,
-        'maxLngE6':117005055,
-        'maxLatE6':40404834,
+        'minLngE6': 115523545,
+        'minLatE6': 39418597,
+        'maxLngE6': 117005055,
+        'maxLatE6': 40404834,
         # 'minLngE6':72004000,
         # 'minLatE6':829300,
         # 'maxLngE6':137834700,
@@ -33,7 +33,7 @@ def main():
     # start is used for retry when exception such as cookie expired occurs.
     start = 1
 
-    while (start == 1):
+    while start == 1:
         try:
             # for virtual display, used for the system which doesn't have user interface.
             # print platform.system()
@@ -50,13 +50,11 @@ def main():
             elif platform.system() == "Darwin":
                 chromedriver = "./chromedriver_mac32"
 
-
             # Retrieve the agent info.
             with open('AgentInfo.txt') as f:
                 lines = f.readlines()
             username = lines[0].replace("\n", "")
             password = lines[1].replace("\n", "")
-
 
             # create chrome driver
             # get the chrome webdriver:
@@ -65,7 +63,7 @@ def main():
             # driver = webdriver.PhantomJS();
             driver.set_window_size(1024, 768)
             driver.get('http://www.ingress.com/intel')
-            # print driver.title
+            print driver.title
 
             # get the login page
             link = driver.find_elements_by_tag_name('a')[0].get_attribute('href')
@@ -82,7 +80,7 @@ def main():
             driver.set_page_load_timeout(20)
             driver.set_script_timeout(20)
             # driver.find_element_by_id('gaia_loginform').submit()
-            time.sleep(25)
+            time.sleep(15)
 
             # get the cookies
             cookie = driver.get_cookies()
@@ -100,7 +98,8 @@ def main():
             f.write(SACSID)
             f.write('; csrftoken=')
             f.write(csrftoken)
-            f.write('; ingress.intelmap.shflt=viz; ingress.intelmap.lat=40.0000000000000; ingress.intelmap.lng=120.00000000000000; ingress.intelmap.zoom=16')
+            f.write(
+                '; ingress.intelmap.shflt=viz; ingress.intelmap.lat=40.0000000000000; ingress.intelmap.lng=120.00000000000000; ingress.intelmap.zoom=16')
             f.close()
         finally:
             # driver.close()
@@ -114,7 +113,7 @@ def main():
             cookies = cookies.read().strip()
 
         # create database
-        conn = sqlite3.connect('test.db')
+        conn = sqlite3.connect('message.db')
 
         print "Opened database successfully";
 
@@ -123,16 +122,17 @@ def main():
                TIME             TEXT      NOT NULL,
                PLAYER           TEXT      NOT NULL,
                TEAM             TEXT      NOT NULL,
+               PORTALNAME       TEXT      NOT NULL,
+               PORTALADDRESS    TEXT      NOT NULL,
                LAT              TEXT      NOT NULL,
                LNG              TEXT      NOT NULL,
                BODY             TEXT      NOT NULL);''')
-        print "Table created successfully";
 
         mints = -1
 
         while True:
             try:
-                intel = ingrex.Intel(cookies, field)
+                intel = ingrex.Intel(cookies, region)
                 result = intel.fetch_msg(mints)
                 if result:
                     mints = result[0][1] + 1
@@ -141,16 +141,17 @@ def main():
                     print(mints)
                     # print(u'{} {}'.format(message.time, message.text.decode('unicode-escape')))
                     # insert into database
-                    conn.execute("INSERT INTO MESSAGE (GUID,TIME,PLAYER,TEAM,LAT,LNG,BODY) \
-                                 VALUES (?,?,?,?,?,?,?);""", (message.guid,
-                                                            message.time,
-                                                            message.player,
-                                                            message.team,
-                                                            message.lat,
-                                                            message.lng,
-                                                            message.text));
+                    conn.execute("INSERT INTO MESSAGE (GUID,TIME,PLAYER,TEAM,PORTALNAME,PORTALADDRESS,LAT,LNG,BODY) \
+                                 VALUES (?,?,?,?,?,?,?,?,?);""", (message.guid,
+                                                                  message.time,
+                                                                  message.player,
+                                                                  message.team,
+                                                                  message.portalname,
+                                                                  message.portaladdress,
+                                                                  message.lat,
+                                                                  message.lng,
+                                                                  message.text));
                     conn.commit()
-                    print "Records created successfully";
 
                 time.sleep(2)
             except Exception, err:
