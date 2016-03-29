@@ -23,7 +23,8 @@ class Message(object):
             self.player = ""
             if str(self.text).startswith("[secure]"):
                 # for handle capture their first portal
-                if str(self.markup[1][1]['plain']) == "":
+                # for handle create their first control field
+                if str(self.markup[1][1]['plain']) == " ":
                     self.player = self.markup[2][1]['plain'].replace(":", "")
                     self.team = self.markup[2][1]['team']
                 else:
@@ -31,7 +32,7 @@ class Message(object):
                     self.player = self.markup[1][1]['plain'].replace(":", "")
                     self.team = self.markup[1][1]['team']
             else:
-                # for handle normal 
+                # for handle normal
                 self.player = self.markup[0][1]['plain'].replace(":", "")
                 self.team = self.markup[0][1]['team']
             self.markup = ''.join(str(e) for e in self.markup)
