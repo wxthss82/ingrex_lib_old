@@ -13,3 +13,4 @@ sudo apt-get install chromium-browser
 #pip install flaky
 #pip install python-telegram-bot
 pip install telegram
+pip install future.utils
