@@ -22,10 +22,18 @@ class Message(object):
             self.team = ""
             self.player = ""
             if str(self.text).startswith("[secure]"):
-                self.player = self.markup[1][1]['plain'].replace(":", "")
-                self.team = self.markup[1][1]['team']
-            self.player = self.markup[0][1]['plain'].replace(":", "")
-            self.team = self.markup[0][1]['team']
+                # for handle capture their first portal
+                if str(self.markup[1][1]['plain']) == "":
+                    self.player = self.markup[2][1]['plain'].replace(":", "")
+                    self.team = self.markup[2][1]['team']
+                else:
+                # for handle secure at player
+                    self.player = self.markup[1][1]['plain'].replace(":", "")
+                    self.team = self.markup[1][1]['team']
+            else:
+                # for handle normal 
+                self.player = self.markup[0][1]['plain'].replace(":", "")
+                self.team = self.markup[0][1]['team']
             self.markup = ''.join(str(e) for e in self.markup)
             # self.portal = self.markup[2]
 
