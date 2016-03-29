@@ -6,7 +6,7 @@ def main():
     bot = telegram.Bot("203372574:AAHQn2Z-a5r-Hvgmj2YCNlCYDCqYMEDLto4")
     print bot.getMe()
 
-    conn = sqlite3.connect("test1.db")
+    conn = sqlite3.connect("message.db")
     c = conn.cursor()
     # queryPlayerLog(c, 'plopl666')
     # queryPlayer(c)
