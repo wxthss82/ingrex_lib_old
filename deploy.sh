@@ -7,3 +7,9 @@ pip install selenium
 pip install requests
 sudo apt-get install xvfb
 sudo apt-get install chromium-browser
+
+# for telegram bot
+pip install nose
+pip install flaky
+pip install python-telegram-bot
+pip install telegram

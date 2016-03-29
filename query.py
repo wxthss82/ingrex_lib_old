@@ -1,6 +1,10 @@
 import sqlite3
+import telegram
 
 def main():
+    bot = telegram.Bot('203372574:AAHQn2Z-a5r-Hvgmj2YCNlCYDCqYMEDLto4')
+    print bot.getMe()
+
     conn = sqlite3.connect("test1.db")
     c = conn.cursor()
     # queryPlayerLog(c, 'plopl666')
