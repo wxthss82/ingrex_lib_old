@@ -8,37 +8,40 @@ import pytz
 class Message(object):
     "Message object"
     def __init__(self, raw_msg):
-        self.raw = raw_msg
-        self.guid = raw_msg[0]
-        self.timestamp = raw_msg[1]
-        seconds, millis = divmod(raw_msg[1], 1000)
-        tz = pytz.timezone('Asia/Shanghai')
-        time = datetime.fromtimestamp(seconds, tz) + timedelta(milliseconds=millis)
-        # print raw_msg
-        self.time = time.strftime('%Y/%m/%d %H:%M:%S:%f')[:-3]
-        self.text = raw_msg[2]['plext']['text']
-        self.markup = raw_msg[2]['plext']['markup']
-        self.team = ""
-        self.player = ""
-        if str(self.text).startswith("[secure]"):
-            self.player = self.markup[1][1]['plain'].replace(":", "")
-            self.team = self.markup[1][1]['team']
-        self.player = self.markup[0][1]['plain'].replace(":", "")
-        self.team = self.markup[0][1]['team']
-        self.markup = ''.join(str(e) for e in self.markup)
-        # self.portal = self.markup[2]
+        try:
+            self.raw = raw_msg
+            self.guid = raw_msg[0]
+            self.timestamp = raw_msg[1]
+            seconds, millis = divmod(raw_msg[1], 1000)
+            tz = pytz.timezone('Asia/Shanghai')
+            time = datetime.fromtimestamp(seconds, tz) + timedelta(milliseconds=millis)
+            # print raw_msg
+            self.time = time.strftime('%Y/%m/%d %H:%M:%S:%f')[:-3]
+            self.text = raw_msg[2]['plext']['text']
+            self.markup = raw_msg[2]['plext']['markup']
+            self.team = ""
+            self.player = ""
+            if str(self.text).startswith("[secure]"):
+                self.player = self.markup[1][1]['plain'].replace(":", "")
+                self.team = self.markup[1][1]['team']
+            self.player = self.markup[0][1]['plain'].replace(":", "")
+            self.team = self.markup[0][1]['team']
+            self.markup = ''.join(str(e) for e in self.markup)
+            # self.portal = self.markup[2]
 
-        self.lat = "-1"
-        self.lng = "-1"
-        self.portal = ""
-        self.portalname = ""
-        self.portaladdress = ""
-        if re.findall(r'u\'latE6\': (\d*)', self.markup):
-            self.lat = re.findall(r'u\'latE6\': (\d*)', self.markup)[0]
-            self.lng = re.findall(r'u\'lngE6\': (\d*)', self.markup)[0]
-            self.portal = Portal(raw_msg[2]['plext']['markup'][2][1])
-            self.portalname = self.portal.name
-            self.portaladdress = self.portal.address
+            self.lat = "-1"
+            self.lng = "-1"
+            self.portal = ""
+            self.portalname = ""
+            self.portaladdress = ""
+            if re.findall(r'u\'latE6\': (\d*)', self.markup):
+                self.lat = re.findall(r'u\'latE6\': (\d*)', self.markup)[0]
+                self.lng = re.findall(r'u\'lngE6\': (\d*)', self.markup)[0]
+                self.portal = Portal(raw_msg[2]['plext']['markup'][2][1])
+                self.portalname = self.portal.name
+                self.portaladdress = self.portal.address
+        except Exception:
+            print raw_msg
 
 
 class Portal(object):
