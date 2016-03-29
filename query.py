@@ -1,7 +1,7 @@
 import sqlite3
 
 def main():
-    conn = sqlite3.connect("message.db")
+    conn = sqlite3.connect("test1.db")
     c = conn.cursor()
     # queryPlayerLog(c, 'plopl666')
     # queryPlayer(c)
@@ -14,7 +14,7 @@ def queryPlayerLog(c, player):
 
 def queryPlayer(c,faction = "ALL"):
     if (faction == "ALL"):
-        c.execute("SELECT DISTINCT PLAYER, TEAM FROM MESSAGE")
+        c.execute("SELECT DISTINCT PLAYER FROM MESSAGE")
     else:
         c.execute("SELECT DISTINCT PLAYER, TEAM FROM MESSAGE WHERE TEAM=? AND LNG!=\"-1\"", (faction,))
     i = 0
