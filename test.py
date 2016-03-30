@@ -73,7 +73,7 @@ def main():
             driver.find_element_by_id('Email').send_keys(username)
             driver.find_element_by_css_selector('#next').click()
             driver.set_page_load_timeout(20)
-            time.sleep(2)
+            time.sleep(5)
             driver.find_element_by_id('Passwd').send_keys(password)
             driver.find_element_by_css_selector('#signIn').click()
             driver.set_page_load_timeout(20)
@@ -162,6 +162,7 @@ def main():
                         pass
 
                 finally:
+                    print maxts - 2000000
                     f = open('./maxts.txt', 'w+')
                     f.write(maxts - 2000000)
                     traceback.print_exception(*exc_info)
