@@ -9,7 +9,10 @@ def main():
     c = conn.cursor()
     # queryPlayerLog(c, 'plopl666')
     # queryPlayer(c)
-    queryPlayer(c)
+    # queryPlayer(c)
+
+    updates = bot.getUpdates()
+    print [u.message.text for u in updates]
 
 def queryPlayerLog(c, player):
     c.execute("SELECT * FROM MESSAGE WHERE PLAYER=? ORDER BY TIME DESC ", (player,))
