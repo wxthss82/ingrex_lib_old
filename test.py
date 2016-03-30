@@ -51,6 +51,10 @@ def main():
             username = lines[0].replace("\n", "")
             password = lines[1].replace("\n", "")
 
+            with open('maxts.txt') as f:
+                line = f.readline()
+            maxts = int(line)
+
             # create chrome driver
             # get the chrome webdriver:
             # https://sites.google.com/a/chromium.org/chromedriver/downloads
@@ -122,7 +126,6 @@ def main():
                BODY             TEXT      NOT NULL);''')
 
         mints = -1
-        maxts = -1
 
         while True:
             try:
@@ -159,6 +162,8 @@ def main():
                         pass
 
                 finally:
+                    f = open('./maxts.txt', 'w+')
+                    f.write(maxts - 2000000)
                     traceback.print_exception(*exc_info)
                     del exc_info
                     break
