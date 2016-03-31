@@ -9,7 +9,7 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 
-
+db_name = "message.db"
 
 def start(bot, update):
     bot.sendMessage(update.message.chat_id, text='Hi!')
@@ -26,14 +26,37 @@ def echo(bot, update):
 def error(bot, update, error):
     logger.warn('Update "%s" caused error "%s"' % (update, error))
 
-def listplayer(bot, update):
-    conn = sqlite3.connect("message.db")
+def activeplayer(bot, update):
+    conn = sqlite3.connect(db_name)
     c = conn.cursor()
     ret = queryPlayer(c)
     bot.sendMessage(update.message.chat_id, text=ret)
 
+def activeplayerres(bot, update):
+    conn = sqlite3.connect(db_name)
+    c = conn.cursor()
+    ret = queryPlayer(c, "RESISTANCE")
+    bot.sendMessage(update.message.chat_id, text=ret)
+
+def activeplayerenl(bot, update):
+    conn = sqlite3.connect(db_name)
+    c = conn.cursor()
+    ret = queryPlayer(c, "ENLIGHTENED")
+    bot.sendMessage(update.message.chat_id, text=ret)
+
+def listfracker(bot, update):
+    conn = sqlite3.connect(db_name)
+    c = conn.cursor()
+    ret = queryFracker(c)
+    bot.sendMessage(update.message.chat_id, text=ret)
+
 
 def main():
+    conn = sqlite3.connect(db_name)
+    c = conn.cursor()
+    print queryPlayer(c)
+    print queryFracker(c)
+
     bot = telegram.Bot("203372574:AAHQn2Z-a5r-Hvgmj2YCNlCYDCqYMEDLto4")
     print bot.getMe()
 
@@ -57,7 +80,11 @@ def main():
     # on different commands - answer in Telegram
     dp.addTelegramCommandHandler("start", start)
     dp.addTelegramCommandHandler("help", help)
-    dp.addTelegramCommandHandler("listplayer", listplayer)
+    dp.addTelegramCommandHandler("listplayer", activeplayer)
+    dp.addTelegramCommandHandler("listplayer", activeplayerres)
+    dp.addTelegramCommandHandler("listplayer", activeplayerenl)
+
+
 
 
     # on noncommand i.e message - echo the message on Telegram
@@ -83,25 +110,31 @@ def queryPlayerLog(c, player):
         i += 1
         ret += row + "\n"
     ret += i
-    return ret
+    return ret[:390]
 
 def queryPlayer(c,faction = "ALL"):
     if (faction == "ALL"):
-        c.execute("SELECT DISTINCT PLAYER FROM MESSAGE")
+        c.execute("SELECT PLAYER, TEAM, COUNT(PLAYER) AS player_occurrence FROM MESSAGE GROUP BY PLAYER ORDER BY player_occurrence DESC")
     else:
-        c.execute("SELECT DISTINCT PLAYER, TEAM FROM MESSAGE WHERE TEAM=? AND LNG!=\"-1\"", (faction,))
+        c.execute("SELECT PLAYER, COUNT(PLAYER) AS player_occurrence FROM MESSAGE GROUP BY PLAYER ORDER BY player_occurrence DESC WHERE TEAM=?", (faction,))
     i = 0
     ret = ""
     for row in c.fetchall():
         i += 1
-        print row
-        ret += str(row) + "\n"
+        ret += str(row).replace('u\'', "").replace("\'", "") + "\n"
+        if ret.__sizeof__() > 390:
+            break
     ret += str(i)
     return ret
 
-
-
-
+def queryFracker(c):
+    c.execute("SELECT PORTALNAME, PLAYER, COUNT(PORTALNAME) AS portal_occurrence FROM MESSAGE GROUP BY PORTALNAME ORDER BY portal_occurrence DESC WHERE BODY LIKE '%fracker%'")
+    ret = ""
+    for row in c.fetchall():
+        ret += str(row).replace('u\'', "").replace("\'", "") + "\n"
+        if ret.__sizeof__() > 390:
+            break
+    return ret
 
 if __name__ == '__main__':
     main()
