@@ -164,7 +164,7 @@ def main():
                 finally:
                     print maxts - 2000000
                     f = open('./maxts.txt', 'w+')
-                    f.write(maxts - 2000000)
+                    f.write(str(maxts - 2000000))
                     f.close()
                     traceback.print_exception(*exc_info)
                     del exc_info
