@@ -31,31 +31,31 @@ def error(bot, update, error):
 def listPlayer(bot, update):
     conn = sqlite3.connect(db_name)
     c = conn.cursor()
-    ret = listPlayer(c)
+    ret = listplayer(c)
     bot.sendMessage(update.message.chat_id, text=ret)
 
 def listPlayerRes(bot, update):
     conn = sqlite3.connect(db_name)
     c = conn.cursor()
-    ret = listPlayer(c, "RESISTANCE")
+    ret = listplayer(c, "RESISTANCE")
     bot.sendMessage(update.message.chat_id, text=ret)
 
 def listPlayerEnl(bot, update):
     conn = sqlite3.connect(db_name)
     c = conn.cursor()
-    ret = listPlayer(c, "ENLIGHTENED")
+    ret = listplayer(c, "ENLIGHTENED")
     bot.sendMessage(update.message.chat_id, text=ret)
 
 def listFrackerPortal(bot, update):
     conn = sqlite3.connect(db_name)
     c = conn.cursor()
-    ret = listFrackerPortal(c)
+    ret = listfrackerportal(c)
     bot.sendMessage(update.message.chat_id, text=ret)
 
 def listFrackerOwner(bot, update):
     conn = sqlite3.connect(db_name)
     c = conn.cursor()
-    ret = listFrackerOwner(c)
+    ret = listfrackerowner(c)
     bot.sendMessage(update.message.chat_id, text=ret)
 
 def main():
@@ -63,10 +63,10 @@ def main():
     sys.setdefaultencoding('utf-8')
     conn = sqlite3.connect(db_name)
     c = conn.cursor()
-    print listPlayer(c)
-    print listPlayer(c, 'ENLIGHTENED')
-    print listPlayer(c, 'RESISTANCE')
-    print listFrackerOwner(c)
+    print listplayer(c)
+    print listplayer(c, 'ENLIGHTENED')
+    print listplayer(c, 'RESISTANCE')
+    print listfrackerowner(c)
 
     bot = telegram.Bot("203372574:AAHQn2Z-a5r-Hvgmj2YCNlCYDCqYMEDLto4")
     print bot.getMe()
@@ -123,7 +123,7 @@ def queryPlayerLog(c, player):
     ret += i
     return ret[:390]
 
-def listPlayer(c, faction ="ALL"):
+def listplayer(c, faction ="ALL"):
     if (faction == "ALL"):
         c.execute("SELECT PLAYER, TEAM, COUNT(*) AS player_occurrence FROM MESSAGE GROUP BY PLAYER ORDER BY COUNT(*) DESC")
     else:
