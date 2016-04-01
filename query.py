@@ -28,34 +28,34 @@ def echo(bot, update):
 def error(bot, update, error):
     logger.warn('Update "%s" caused error "%s"' % (update, error))
 
-def listplayer(bot, update):
+def listPlayer(bot, update):
     conn = sqlite3.connect(db_name)
     c = conn.cursor()
-    ret = queryPlayer(c)
+    ret = listPlayer(c)
     bot.sendMessage(update.message.chat_id, text=ret)
 
-def listplayerres(bot, update):
+def listPlayerRes(bot, update):
     conn = sqlite3.connect(db_name)
     c = conn.cursor()
-    ret = queryPlayer(c, "RESISTANCE")
+    ret = listPlayer(c, "RESISTANCE")
     bot.sendMessage(update.message.chat_id, text=ret)
 
-def listplayerenl(bot, update):
+def listPlayerEnl(bot, update):
     conn = sqlite3.connect(db_name)
     c = conn.cursor()
-    ret = queryPlayer(c, "ENLIGHTENED")
+    ret = listPlayer(c, "ENLIGHTENED")
     bot.sendMessage(update.message.chat_id, text=ret)
 
-def listfrackerportal(bot, update):
+def listFrackerPortal(bot, update):
     conn = sqlite3.connect(db_name)
     c = conn.cursor()
-    ret = queryFracker(c)
+    ret = listFrackerPortal(c)
     bot.sendMessage(update.message.chat_id, text=ret)
 
-def listfrackerowner(bot, update):
+def listFrackerOwner(bot, update):
     conn = sqlite3.connect(db_name)
     c = conn.cursor()
-    ret = queryFrackerowner(c)
+    ret = listFrackerOwner(c)
     bot.sendMessage(update.message.chat_id, text=ret)
 
 def main():
@@ -63,11 +63,10 @@ def main():
     sys.setdefaultencoding('utf-8')
     conn = sqlite3.connect(db_name)
     c = conn.cursor()
-    print queryPlayer(c)
-    print queryFracker(c)
-    print queryPlayer(c, 'ENLIGHTENED')
-    print queryPlayer(c, 'RESISTANCE')
-    print queryFrackerowner(c)
+    print listPlayer(c)
+    print listPlayer(c, 'ENLIGHTENED')
+    print listPlayer(c, 'RESISTANCE')
+    print listFrackerOwner(c)
 
     bot = telegram.Bot("203372574:AAHQn2Z-a5r-Hvgmj2YCNlCYDCqYMEDLto4")
     print bot.getMe()
@@ -92,15 +91,11 @@ def main():
     # on different commands - answer in Telegram
     dp.addTelegramCommandHandler("start", start)
     dp.addTelegramCommandHandler("help", help)
-    dp.addTelegramCommandHandler("listplayer", listplayer)
-    dp.addTelegramCommandHandler("listplayerres", listplayerres)
-    dp.addTelegramCommandHandler("listplayerenl", listplayerenl)
-    dp.addTelegramCommandHandler("listfrackerportal", listfrackerportal)
-    dp.addTelegramCommandHandler("listfrackerowner", listfrackerowner)
-
-
-
-
+    dp.addTelegramCommandHandler("listplayer", listPlayer)
+    dp.addTelegramCommandHandler("listplayerres", listPlayerRes)
+    dp.addTelegramCommandHandler("listplayerenl", listPlayerEnl)
+    dp.addTelegramCommandHandler("listfrackerportal", listFrackerPortal)
+    dp.addTelegramCommandHandler("listfrackerowner", listFrackerOwner)
 
 
     # on noncommand i.e message - echo the message on Telegram
@@ -128,7 +123,7 @@ def queryPlayerLog(c, player):
     ret += i
     return ret[:390]
 
-def queryPlayer(c,faction = "ALL"):
+def listPlayer(c, faction ="ALL"):
     if (faction == "ALL"):
         c.execute("SELECT PLAYER, TEAM, COUNT(*) AS player_occurrence FROM MESSAGE GROUP BY PLAYER ORDER BY COUNT(*) DESC")
     else:
@@ -143,7 +138,7 @@ def queryPlayer(c,faction = "ALL"):
     ret += str(i)
     return ret
 
-def queryFracker(c):
+def listfrackerportal(c):
     reload(sys)
     sys.setdefaultencoding('utf-8')
     c.execute("SELECT PORTALNAME, COUNT(PORTALNAME) as freq FROM (SELECT PORTALNAME FROM MESSAGE WHERE BODY LIKE '%fracker%') GROUP BY PORTALNAME ORDER BY freq DESC")
@@ -155,7 +150,7 @@ def queryFracker(c):
     return ret
 
 
-def queryFrackerowner(c):
+def listfrackerowner(c):
     c.execute("SELECT PLAYER, COUNT(PLAYER) as freq FROM (SELECT PLAYER FROM MESSAGE WHERE BODY LIKE '%fracker%') GROUP BY PLAYER ORDER BY freq DESC")
     ret = ""
     for row in c.fetchall():
