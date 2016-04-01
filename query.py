@@ -26,36 +26,44 @@ def echo(bot, update):
 def error(bot, update, error):
     logger.warn('Update "%s" caused error "%s"' % (update, error))
 
-def activeplayer(bot, update):
+def listplayer(bot, update):
     conn = sqlite3.connect(db_name)
     c = conn.cursor()
     ret = queryPlayer(c)
     bot.sendMessage(update.message.chat_id, text=ret)
 
-def activeplayerres(bot, update):
+def listplayerres(bot, update):
     conn = sqlite3.connect(db_name)
     c = conn.cursor()
     ret = queryPlayer(c, "RESISTANCE")
     bot.sendMessage(update.message.chat_id, text=ret)
 
-def activeplayerenl(bot, update):
+def listplayerenl(bot, update):
     conn = sqlite3.connect(db_name)
     c = conn.cursor()
     ret = queryPlayer(c, "ENLIGHTENED")
     bot.sendMessage(update.message.chat_id, text=ret)
 
-def listfracker(bot, update):
+def listfrackerportal(bot, update):
     conn = sqlite3.connect(db_name)
     c = conn.cursor()
     ret = queryFracker(c)
     bot.sendMessage(update.message.chat_id, text=ret)
 
+def listfrackerowner(bot, update):
+    conn = sqlite3.connect(db_name)
+    c = conn.cursor()
+    ret = queryFrackerowner(c)
+    bot.sendMessage(update.message.chat_id, text=ret)
 
 def main():
     conn = sqlite3.connect(db_name)
     c = conn.cursor()
     print queryPlayer(c)
     print queryFracker(c)
+    print queryPlayer(c, 'ENLIGHTENED')
+    print queryPlayer(c, 'RESISTANCE')
+    print queryFrackerowner(c)
 
     bot = telegram.Bot("203372574:AAHQn2Z-a5r-Hvgmj2YCNlCYDCqYMEDLto4")
     print bot.getMe()
@@ -80,9 +88,13 @@ def main():
     # on different commands - answer in Telegram
     dp.addTelegramCommandHandler("start", start)
     dp.addTelegramCommandHandler("help", help)
-    dp.addTelegramCommandHandler("listplayer", activeplayer)
-    dp.addTelegramCommandHandler("listplayer", activeplayerres)
-    dp.addTelegramCommandHandler("listplayer", activeplayerenl)
+    dp.addTelegramCommandHandler("listplayer", listplayer)
+    dp.addTelegramCommandHandler("listplayerres", listplayerres)
+    dp.addTelegramCommandHandler("listplayerenl", listplayerenl)
+    dp.addTelegramCommandHandler("listfrackerportal", listfrackerportal)
+    dp.addTelegramCommandHandler("listfrackerowner", listfrackerowner)
+
+
 
 
 
@@ -114,9 +126,9 @@ def queryPlayerLog(c, player):
 
 def queryPlayer(c,faction = "ALL"):
     if (faction == "ALL"):
-        c.execute("SELECT PLAYER, TEAM, COUNT(PLAYER) AS player_occurrence FROM MESSAGE GROUP BY PLAYER ORDER BY player_occurrence DESC")
+        c.execute("SELECT PLAYER, TEAM, COUNT(*) AS player_occurrence FROM MESSAGE GROUP BY PLAYER ORDER BY COUNT(*) DESC")
     else:
-        c.execute("SELECT PLAYER, COUNT(PLAYER) AS player_occurrence FROM MESSAGE GROUP BY PLAYER ORDER BY player_occurrence DESC WHERE TEAM=?", (faction,))
+        c.execute("SELECT PLAYER, COUNT(PLAYER) AS player_occurrence FROM (SELECT PLAYER, TEAM FROM MESSAGE WHERE TEAM=?)  GROUP BY PLAYER ORDER BY player_occurrence DESC", (faction,))
     i = 0
     ret = ""
     for row in c.fetchall():
@@ -128,10 +140,20 @@ def queryPlayer(c,faction = "ALL"):
     return ret
 
 def queryFracker(c):
-    c.execute("SELECT PORTALNAME, PLAYER, COUNT(PORTALNAME) AS portal_occurrence FROM MESSAGE GROUP BY PORTALNAME ORDER BY portal_occurrence DESC WHERE BODY LIKE '%fracker%'")
+    c.execute("SELECT PORTALNAME, COUNT(PORTALNAME) as freq FROM (SELECT PORTALNAME FROM MESSAGE WHERE BODY LIKE '%fracker%') GROUP BY PORTALNAME ORDER BY freq DESC")
     ret = ""
     for row in c.fetchall():
-        ret += str(row).replace('u\'', "").replace("\'", "") + "\n"
+        ret += str(row).replace('u\'', "").replace("\'", "").decode('unicode-escape') + "\n"
+        if ret.__sizeof__() > 390:
+            break
+    return ret
+
+
+def queryFrackerowner(c):
+    c.execute("SELECT PLAYER, COUNT(PLAYER) as freq FROM (SELECT PLAYER FROM MESSAGE WHERE BODY LIKE '%fracker%') GROUP BY PLAYER ORDER BY freq DESC")
+    ret = ""
+    for row in c.fetchall():
+        ret += str(row).replace('u\'', "").replace("\'", "").decode('unicode-escape') + "\n"
         if ret.__sizeof__() > 390:
             break
     return ret
