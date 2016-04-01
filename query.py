@@ -25,7 +25,8 @@ def help(bot, update):
           + "/listplayerres" + "\n" \
           + "/listplayerenl" + "\n" \
           + "/listfrackerportal" + "\n" \
-          + "/listfrackerowner" + "\n"
+          + "/listfrackerowner" + "\n" \
+          + "/listplayerlog wwx" + "\n"
     bot.sendMessage(update.message.chat_id, text=str)
 
 
