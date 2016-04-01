@@ -1,6 +1,8 @@
 import logging
 import sqlite3
 import telegram
+import sys
+
 
 # Enable logging
 logging.basicConfig(
@@ -57,6 +59,8 @@ def listfrackerowner(bot, update):
     bot.sendMessage(update.message.chat_id, text=ret)
 
 def main():
+    reload(sys)
+    sys.setdefaultencoding('utf-8')
     conn = sqlite3.connect(db_name)
     c = conn.cursor()
     print queryPlayer(c)
