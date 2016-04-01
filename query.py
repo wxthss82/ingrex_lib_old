@@ -147,7 +147,7 @@ def queryFracker(c):
     c.execute("SELECT PORTALNAME, COUNT(PORTALNAME) as freq FROM (SELECT PORTALNAME FROM MESSAGE WHERE BODY LIKE '%fracker%') GROUP BY PORTALNAME ORDER BY freq DESC")
     ret = ""
     for row in c.fetchall():
-        ret += str(row).replace('u\'', "").replace("\'", "").decode('unicode-escape') + "\n"
+        ret += str(row).replace('u\'', "").replace("\'", "").encode("utf-8") + "\n"
         if ret.__sizeof__() > 390:
             break
     return ret
@@ -157,7 +157,7 @@ def queryFrackerowner(c):
     c.execute("SELECT PLAYER, COUNT(PLAYER) as freq FROM (SELECT PLAYER FROM MESSAGE WHERE BODY LIKE '%fracker%') GROUP BY PLAYER ORDER BY freq DESC")
     ret = ""
     for row in c.fetchall():
-        ret += str(row).replace('u\'', "").replace("\'", "").decode('unicode-escape') + "\n"
+        ret += str(row).replace('u\'', "").replace("\'", "").encode("utf-8") + "\n"
         if ret.__sizeof__() > 390:
             break
     return ret
