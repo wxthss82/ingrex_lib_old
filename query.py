@@ -84,6 +84,7 @@ def listFrackerOwner(bot, update):
 def listPlayerLog(bot, update, args):
     conn = sqlite3.connect(db_name)
     c = conn.cursor()
+    print args
     ret = listplayerlog(c, args)
     i = 0
     while i + maxSingleMessageLength < maxMessageLength:
