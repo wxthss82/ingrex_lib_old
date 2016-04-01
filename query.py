@@ -136,7 +136,7 @@ def listplayer(c, faction ="ALL"):
     ret = ""
     for row in c.fetchall():
         i += 1
-        ret += str(row).replace('u\'', "").replace("\'", "") + "\n"
+        ret += str(row)[2:-1].replace("\'", "").replace(", uENLIGHTENED", ", E").replace(", uRESISTANCE", ", R")  + "\n"
         if ret.__sizeof__() > 390:
             break
     ret += str(i)
@@ -148,7 +148,7 @@ def listfrackerportal(c):
     c.execute("SELECT PORTALNAME, COUNT(PORTALNAME) as freq FROM (SELECT PORTALNAME FROM MESSAGE WHERE BODY LIKE '%fracker%') GROUP BY PORTALNAME ORDER BY freq DESC")
     ret = ""
     for row in c.fetchall():
-        ret += str(row).replace('u\'', "").replace("\'", "").decode('unicode-escape') + "\n"
+        ret += str(row)[2:-1].replace("\'", "").decode('unicode-escape') + "\n"
         if ret.__sizeof__() > 390:
             break
     return ret
@@ -158,7 +158,7 @@ def listfrackerowner(c):
     c.execute("SELECT PLAYER, COUNT(PLAYER) as freq FROM (SELECT PLAYER FROM MESSAGE WHERE BODY LIKE '%fracker%') GROUP BY PLAYER ORDER BY freq DESC")
     ret = ""
     for row in c.fetchall():
-        ret += str(row).replace('u\'', "").replace("\'", "") + "\n"
+        ret += str(row)[2:-1].replace("\'", "") + "\n"
         if ret.__sizeof__() > 390:
             break
     return ret
