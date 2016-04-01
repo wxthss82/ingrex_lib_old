@@ -18,7 +18,12 @@ def start(bot, update):
 
 
 def help(bot, update):
-    bot.sendMessage(update.message.chat_id, text='Help!')
+    str = "/listplayer" + "\n" \
+          + "/listplayerres" + "\n" \
+          + "/listplayerenl" + "\n" \
+          + "/listfrackerportal" + "\n" \
+          + "/listfrackerowner" + "\n"
+    bot.sendMessage(update.message.chat_id, text=str)
 
 
 def echo(bot, update):
@@ -89,7 +94,6 @@ def main():
     dp = updater.dispatcher
 
     # on different commands - answer in Telegram
-    dp.addTelegramCommandHandler("start", start)
     dp.addTelegramCommandHandler("help", help)
     dp.addTelegramCommandHandler("listplayer", listPlayer)
     dp.addTelegramCommandHandler("listplayerres", listPlayerRes)
