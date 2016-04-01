@@ -85,7 +85,7 @@ def listPlayerLog(bot, update, args):
     conn = sqlite3.connect(db_name)
     c = conn.cursor()
     print ' '.join(args)
-    ret = listplayerlog(c, args[3:-2])
+    ret = listplayerlog(c, ' '.join(args))
     i = 0
     while i + maxSingleMessageLength < maxMessageLength:
         str = ret[i:i+maxSingleMessageLength]
