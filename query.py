@@ -4,6 +4,7 @@ import telegram
 import sys
 
 maxMessageLength = 1200 + 1
+maxLogMessageLength = 2400 + 1
 maxSingleMessageLength = 400
 
 # Enable logging
@@ -87,7 +88,7 @@ def listPlayerLog(bot, update, args):
     print ' '.join(args)
     ret = listplayerlog(c, ' '.join(args))
     i = 0
-    while i + maxSingleMessageLength < maxMessageLength:
+    while i + maxSingleMessageLength < maxLogMessageLength:
         str = ret[i:i+maxSingleMessageLength]
         bot.sendMessage(update.message.chat_id, text=str)
         i += maxSingleMessageLength
@@ -202,7 +203,7 @@ def listplayerlog(c, player):
     ret = ""
     for row in c.fetchall():
         ret += str(row)[2:-1].decode('unicode-escape') + "\n"
-        if ret.__sizeof__() > maxMessageLength:
+        if ret.__sizeof__() > maxLogMessageLength:
             break
     return ret
 
