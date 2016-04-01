@@ -3,6 +3,8 @@ import sqlite3
 import telegram
 import sys
 
+maxMessageLength = 1200 + 1
+maxSingleMessageLength = 400
 
 # Enable logging
 logging.basicConfig(
@@ -43,25 +45,52 @@ def listPlayerRes(bot, update):
     conn = sqlite3.connect(db_name)
     c = conn.cursor()
     ret = listplayer(c, "RESISTANCE")
-    bot.sendMessage(update.message.chat_id, text=ret)
+    i = 0
+    while i + maxSingleMessageLength < maxMessageLength:
+        str = ret[i:i+maxSingleMessageLength]
+        bot.sendMessage(update.message.chat_id, text=str)
+        i += maxSingleMessageLength
 
 def listPlayerEnl(bot, update):
     conn = sqlite3.connect(db_name)
     c = conn.cursor()
     ret = listplayer(c, "ENLIGHTENED")
-    bot.sendMessage(update.message.chat_id, text=ret)
+    i = 0
+    while i + maxSingleMessageLength < maxMessageLength:
+        str = ret[i:i+maxSingleMessageLength]
+        bot.sendMessage(update.message.chat_id, text=str)
+        i += maxSingleMessageLength
 
 def listFrackerPortal(bot, update):
     conn = sqlite3.connect(db_name)
     c = conn.cursor()
     ret = listfrackerportal(c)
-    bot.sendMessage(update.message.chat_id, text=ret)
+    i = 0
+    while i + maxSingleMessageLength < maxMessageLength:
+        str = ret[i:i+maxSingleMessageLength]
+        bot.sendMessage(update.message.chat_id, text=str)
+        i += maxSingleMessageLength
 
 def listFrackerOwner(bot, update):
     conn = sqlite3.connect(db_name)
     c = conn.cursor()
     ret = listfrackerowner(c)
-    bot.sendMessage(update.message.chat_id, text=ret)
+    i = 0
+    while i + maxSingleMessageLength < maxMessageLength:
+        str = ret[i:i+maxSingleMessageLength]
+        bot.sendMessage(update.message.chat_id, text=str)
+        i += maxSingleMessageLength
+
+def listPlayerLog(bot, update, args):
+    conn = sqlite3.connect(db_name)
+    c = conn.cursor()
+    ret = listplayerlog(c, args)
+    i = 0
+    while i + maxSingleMessageLength < maxMessageLength:
+        str = ret[i:i+maxSingleMessageLength]
+        bot.sendMessage(update.message.chat_id, text=str)
+        i += maxSingleMessageLength
+
 
 def main():
     reload(sys)
@@ -72,6 +101,7 @@ def main():
     print listplayer(c, 'ENLIGHTENED')
     print listplayer(c, 'RESISTANCE')
     print listfrackerowner(c)
+    print listplayerlog(c, 'wwx')
 
     bot = telegram.Bot("203372574:AAHQn2Z-a5r-Hvgmj2YCNlCYDCqYMEDLto4")
     print bot.getMe()
@@ -100,6 +130,8 @@ def main():
     dp.addTelegramCommandHandler("listplayerenl", listPlayerEnl)
     dp.addTelegramCommandHandler("listfrackerportal", listFrackerPortal)
     dp.addTelegramCommandHandler("listfrackerowner", listFrackerOwner)
+    dp.addTelegramCommandHandler("listplayerlog", listPlayerLog)
+
 
 
     # on noncommand i.e message - echo the message on Telegram
@@ -125,7 +157,7 @@ def queryPlayerLog(c, player):
         i += 1
         ret += row + "\n"
     ret += i
-    return ret[:390]
+    return ret[:maxMessageLength]
 
 def listplayer(c, faction ="ALL"):
     if (faction == "ALL"):
@@ -137,7 +169,7 @@ def listplayer(c, faction ="ALL"):
     for row in c.fetchall():
         i += 1
         ret += str(row)[2:-1].replace("\'", "").replace(", uENLIGHTENED", ", E").replace(", uRESISTANCE", ", R")  + "\n"
-        if ret.__sizeof__() > 390:
+        if ret.__sizeof__() > maxMessageLength:
             break
     ret += str(i)
     return ret
@@ -149,7 +181,7 @@ def listfrackerportal(c):
     ret = ""
     for row in c.fetchall():
         ret += str(row)[2:-1].replace("\'", "").decode('unicode-escape') + "\n"
-        if ret.__sizeof__() > 390:
+        if ret.__sizeof__() > maxMessageLength:
             break
     return ret
 
@@ -159,9 +191,20 @@ def listfrackerowner(c):
     ret = ""
     for row in c.fetchall():
         ret += str(row)[2:-1].replace("\'", "") + "\n"
-        if ret.__sizeof__() > 390:
+        if ret.__sizeof__() > maxMessageLength:
             break
     return ret
+
+def listplayerlog(c, player):
+    c.execute(
+        "SELECT TIME, BODY FROM MESSAGE WHERE PLAYER=? ORDER BY TIME DESC", (player, ))
+    ret = ""
+    for row in c.fetchall():
+        ret += str(row)[2:-1].decode('unicode-escape') + "\n"
+        if ret.__sizeof__() > maxMessageLength:
+            break
+    return ret
+
 
 if __name__ == '__main__':
     main()
