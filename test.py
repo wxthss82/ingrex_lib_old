@@ -17,10 +17,10 @@ def main():
     sys.setdefaultencoding('utf-8')
     region = {
         #  Beijing Region
-        'minLngE6': 115523545,
-        'minLatE6': 39418597,
-        'maxLngE6': 117005055,
-        'maxLatE6': 40404834,
+        'minLngE6': 114095819,
+        'minLatE6': 22261454,
+        'maxLngE6': 114250614,
+        'maxLatE6': 22347542,
         #  China Region
         # 'minLngE6':72004000,
         # 'minLatE6':829300,
@@ -110,7 +110,7 @@ def main():
             cookies = cookies.read().strip()
 
         # create database
-        conn = sqlite3.connect('message_before.db')
+        conn = sqlite3.connect('message_hk.db')
 
         print "Opened database successfully";
 
