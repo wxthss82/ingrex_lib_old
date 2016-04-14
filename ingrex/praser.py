@@ -16,7 +16,8 @@ class Message(object):
             tz = pytz.timezone('Asia/Shanghai')
             time = datetime.fromtimestamp(seconds, tz) + timedelta(milliseconds=millis)
             # print raw_msg
-            self.time = time.strftime('%Y/%m/%d %H:%M:%S:%f')[:-3]
+            # self.time = time.strftime('%Y/%m/%d %H:%M:%S:%f')[:-3]
+            self.time = time
             self.text = raw_msg[2]['plext']['text']
             self.markup = raw_msg[2]['plext']['markup']
             self.team = ""
@@ -38,14 +39,14 @@ class Message(object):
             self.markup = ''.join(str(e) for e in self.markup)
             # self.portal = self.markup[2]
 
-            self.lat = "-1"
-            self.lng = "-1"
+            self.lat = -1
+            self.lng = -1
             self.portal = ""
             self.portalname = ""
             self.portaladdress = ""
             if re.findall(r'u\'latE6\': (\d*)', self.markup):
-                self.lat = re.findall(r'u\'latE6\': (\d*)', self.markup)[0]
-                self.lng = re.findall(r'u\'lngE6\': (\d*)', self.markup)[0]
+                self.lat = long(float(re.findall(r'u\'latE6\': (\d*)', self.markup)[0]))
+                self.lng = long(float(re.findall(r'u\'lngE6\': (\d*)', self.markup)[0]))
                 self.portal = Portal(raw_msg[2]['plext']['markup'][2][1])
                 self.portalname = self.portal.name
                 self.portaladdress = self.portal.address

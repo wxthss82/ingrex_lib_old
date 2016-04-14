@@ -81,7 +81,7 @@ def main():
             cookie = driver.get_cookies()
             for c in cookie:
                 print(c["value"])
-                if len(c["value"]) > 400:
+                if len(c["value"]) > 200:
                     SACSID = c["value"]
                 if len(c["value"]) == 32:
                     csrftoken = c["value"]
@@ -106,19 +106,19 @@ def main():
             cookies = cookies.read().strip()
 
         # create database
-        conn = sqlite3.connect('message.db')
+        conn = sqlite3.connect('comm.db')
 
         print "Opened database successfully";
 
         conn.execute('''CREATE TABLE IF NOT EXISTS MESSAGE
                (GUID TEXT PRIMARY KEY     NOT NULL,
-               TIME             TEXT      NOT NULL,
+               TIME             DATETIME      NOT NULL,
                PLAYER           TEXT      NOT NULL,
                TEAM             TEXT      NOT NULL,
                PORTALNAME       TEXT      NOT NULL,
                PORTALADDRESS    TEXT      NOT NULL,
-               LAT              TEXT      NOT NULL,
-               LNG              TEXT      NOT NULL,
+               LAT              BIGINT      NOT NULL,
+               LNG              BIGINT      NOT NULL,
                BODY             TEXT      NOT NULL);''')
 
         mints = -1

@@ -14,7 +14,7 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 
-db_name = "message.db"
+db_name = "comm.db"
 
 def start(bot, update):
     bot.sendMessage(update.message.chat_id, text='Hi!')
@@ -164,9 +164,9 @@ def queryPlayerLog(c, player):
 
 def listplayer(c, faction ="ALL"):
     if (faction == "ALL"):
-        c.execute("SELECT PLAYER, TEAM, COUNT(*) AS player_occurrence FROM MESSAGE GROUP BY PLAYER ORDER BY COUNT(*) DESC")
+        c.execute("SELECT PLAYER, TEAM, COUNT(*) AS player_occurrence FROM (SELECT PLAYER, TEAM  FROM  MESSAGE WHERE TIME > (SELECT DATETIME('now', '-14 day'))) GROUP BY PLAYER ORDER BY COUNT(*) DESC;")
     else:
-        c.execute("SELECT PLAYER, COUNT(PLAYER) AS player_occurrence FROM (SELECT PLAYER, TEAM FROM MESSAGE WHERE TEAM=?)  GROUP BY PLAYER ORDER BY player_occurrence DESC", (faction,))
+        c.execute("SELECT PLAYER, COUNT(PLAYER) AS player_occurrence FROM (SELECT PLAYER, TEAM FROM MESSAGE WHERE TEAM=? and TIME > (SELECT DATETIME('now', '-14 day')))  GROUP BY PLAYER ORDER BY player_occurrence DESC", (faction,))
     i = 0
     ret = ""
     for row in c.fetchall():
