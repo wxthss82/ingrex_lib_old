@@ -76,8 +76,10 @@ def main():
             print "passwd"
             driver.save_screenshot("1.png")
 
+            driver.set_page_load_timeout(20)
+            driver.set_script_timeout(20)
             # driver.find_element_by_id('gaia_loginform').submit()
-            time.sleep(5)
+            # time.sleep(5)
             print "cookies1"
 
             # get the cookies
