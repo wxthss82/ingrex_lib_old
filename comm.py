@@ -68,10 +68,12 @@ def main():
             time.sleep(1)
             driver.find_element_by_id('Email').send_keys(username)
             driver.find_element_by_css_selector('#next').click()
+            print "email"
             driver.set_page_load_timeout(20)
             time.sleep(2)
             driver.find_element_by_id('Passwd').send_keys(password)
             driver.find_element_by_css_selector('#signIn').click()
+            print "passwd"
             driver.set_page_load_timeout(20)
             driver.set_script_timeout(20)
             # driver.find_element_by_id('gaia_loginform').submit()
@@ -85,6 +87,7 @@ def main():
                     SACSID = c["value"]
                 if len(c["value"]) == 32:
                     csrftoken = c["value"]
+            print "cookies"
             f = open('./cookies', 'w+')
             # for v in cookies:
             #     f.writelines(v)
