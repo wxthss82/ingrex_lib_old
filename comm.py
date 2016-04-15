@@ -74,6 +74,8 @@ def main():
             driver.find_element_by_id('Passwd').send_keys(password)
             driver.find_element_by_css_selector('#signIn').click()
             print "passwd"
+            driver.save_screenshot("1.png")
+
             driver.set_page_load_timeout(20)
             driver.set_script_timeout(20)
             # driver.find_element_by_id('gaia_loginform').submit()
@@ -101,6 +103,7 @@ def main():
             f.close()
         finally:
             # driver.close()
+            print "exception"
             if platform.system() == "Linux":
                 display.stop()
             driver.quit()
