@@ -61,9 +61,10 @@ def main():
             service_log_path = "{}/chromedriver.log".format(".")
             service_args = ['--verbose']
             # driver = webdriver.Chrome("./chromedriver_linux64")
-            driver = webdriver.Chrome(chromedriver,
-                                      service_args=service_args,
-                                      service_log_path=service_log_path)
+            # driver = webdriver.Chrome(chromedriver,
+            #                           service_args=service_args,
+            #                           service_log_path=service_log_path)
+            driver = webdriver.PhantomJS("./phantomjs-2.1.1-linux-x86_64/bin/phantomjs")
             # driver = webdriver.PhantomJS();
             driver.set_window_size(1024, 768)
             print "start2"
