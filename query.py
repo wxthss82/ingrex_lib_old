@@ -104,7 +104,7 @@ def main():
     print listplayer(c, 'ENLIGHTENED')
     print listplayer(c, 'RESISTANCE')
     print listfrackerowner(c)
-    # print listplayerlog(c, 'wwx')
+    # print listplayerlog(c, 'dabogei')
 
     bot = telegram.Bot("203372574:AAHQn2Z-a5r-Hvgmj2YCNlCYDCqYMEDLto4")
     print bot.getMe()

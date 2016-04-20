@@ -36,6 +36,7 @@ def main():
                 display = Display(visible=0, size=(800, 600))
                 display.start()
 
+            print "start"
             # used for generate debug log
             chromedriver = ""
             if platform.system() == "Windows":

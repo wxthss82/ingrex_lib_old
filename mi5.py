@@ -20,8 +20,8 @@ def main():
     #https://sites.google.com/a/chromium.org/chromedriver/downloads
     display = Display(visible=0, size=(400, 300))
     display.start()
-    i = 7
-    while (i <= 44):
+    i = 1
+    while (i <= 4):
         driver = webdriver.Chrome("./chromedriver_mac32")
         # driver = webdriver.PhantomJS();
         driver.set_window_size(1024, 768)
