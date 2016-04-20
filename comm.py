@@ -57,6 +57,7 @@ def main():
             # https://sites.google.com/a/chromium.org/chromedriver/downloads
             print "start1"
             driver = webdriver.Chrome(chromedriver)
+            print chromedriver
             # driver = webdriver.PhantomJS();
             driver.set_window_size(1024, 768)
             print "start2"
