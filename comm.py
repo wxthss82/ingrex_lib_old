@@ -55,9 +55,11 @@ def main():
             # create chrome driver
             # get the chrome webdriver:
             # https://sites.google.com/a/chromium.org/chromedriver/downloads
+            print "start1"
             driver = webdriver.Chrome(chromedriver)
             # driver = webdriver.PhantomJS();
             driver.set_window_size(1024, 768)
+            print "start2"
             driver.get('http://www.ingress.com/intel')
             print driver.title
 
