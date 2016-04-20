@@ -45,6 +45,7 @@ def main():
                 chromedriver = "./chromedriver_linux64"
             elif platform.system() == "Darwin":
                 chromedriver = "./chromedriver_mac32"
+            print platform.system()
 
             # Retrieve the agent info.
             with open('AgentInfo.txt') as f:
@@ -56,8 +57,13 @@ def main():
             # get the chrome webdriver:
             # https://sites.google.com/a/chromium.org/chromedriver/downloads
             print "start1"
-            driver = webdriver.Chrome(chromedriver)
             print chromedriver
+            service_log_path = "{}/chromedriver.log".format(".")
+            service_args = ['--verbose']
+            # driver = webdriver.Chrome("./chromedriver_linux64")
+            driver = webdriver.Chrome(chromedriver,
+                                      service_args=service_args,
+                                      service_log_path=service_log_path)
             # driver = webdriver.PhantomJS();
             driver.set_window_size(1024, 768)
             print "start2"
