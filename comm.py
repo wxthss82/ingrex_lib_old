@@ -58,8 +58,8 @@ def main():
             # https://sites.google.com/a/chromium.org/chromedriver/downloads
             print "start1"
             print chromedriver
-            service_log_path = "{}/chromedriver.log".format(".")
-            service_args = ['--verbose']
+            # service_log_path = "{}/chromedriver.log".format(".")
+            # service_args = ['--verbose']
             # driver = webdriver.Chrome("./chromedriver_linux64")
             # driver = webdriver.Chrome(chromedriver,
             #                           service_args=service_args,
