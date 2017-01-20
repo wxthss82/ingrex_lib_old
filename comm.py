@@ -128,18 +128,20 @@ def main():
         cursor = db.cursor()
         print "Opened database successfully";
 
-        cursor.execute('''CREATE TABLE IF NOT EXISTS MESSAGE
-            (
-                GUID TEXT NOT NULL,
-                TIME DATETIME NOT NULL,
-                PLAYER TINYTEXT NOT NULL,
-                TEAM TINYTEXT NOT NULL,
-                PORTALNAME TINYTEXT NOT NULL,
-                PORTALADDRESS TINYTEXT NOT NULL,
-                LAT MEDIUMTEXT NOT NULL,
-                LNG MEDIUMTEXT NOT NULL,
-                BODY TEXT NOT NULL
-            );''')
+        cursor.execute('''CREATE TABLE IF NOT EXISTS `message` (
+                `guid` varchar(32) NOT NULL,
+                `time` datetime NULL,
+                `player` varchar(32) NULL,
+                `team` varchar(32) NULL,
+                `portalname` varchar(100) NULL,
+                `portaladdress` varchar(100) NULL,
+                `lat` int(11) NULL,
+                `lng` int(11) NULL,
+                `message` varchar(255) NULL,
+                PRIMARY KEY (`guid`)
+            ) ENGINE=InnoDB
+            DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci;
+      ''')
 
         mints = -1
 
@@ -154,8 +156,8 @@ def main():
                     print(mints)
                     # print(u'{} {}'.format(message.time, message.text.decode('unicode-escape')))
                     # insert into database
-                    cursor.execute("INSERT INTO MESSAGE (GUID,TIME,PLAYER,TEAM,PORTALNAME,PORTALADDRESS,LAT,LNG,BODY) \
-                                 VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)", (message.guid,
+                    cursor.execute("INSERT INTO message (guid,time,player,team,portalname,portaladdress,lat,lng,body) \
+                                 VALUES (%s,%s,%s,%s,%s,%s,%d,%d,%s)", (message.guid,
                                                                   message.time.strftime('%Y-%m-%d %H:%M:%S.%f'),
                                                                   str(message.player).decode('unicode-escape'),
                                                                   str(message.team).decode('unicode-escape'),
