@@ -155,7 +155,7 @@ def main():
                     # print(u'{} {}'.format(message.time, message.text.decode('unicode-escape')))
                     # insert into database
                     cursor.execute("INSERT INTO MESSAGE (GUID,LAT,LNG) \
-                                 VALUES (%s,%d,%d)", (message.guid,
+                                 VALUES (%s,%lld,%lld)", (message.guid,
                                                                   message.lat,
                                                                   message.lng,
                                                                   ));
