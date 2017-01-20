@@ -160,10 +160,10 @@ def main():
                                                                   message.player,
                                                                   message.team,
                                                                   message.portalname,
-                                                                  message.portaladdress,
+                                                                  str.replace(message.portaladdress, ",", " "),
                                                                   message.lat,
                                                                   message.lng,
-                                                                  message.text));
+                                                                  str.replace(message.text, ",", " ")));
                     db.commit()
 
                 time.sleep(2)
