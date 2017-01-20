@@ -123,7 +123,7 @@ def main():
 
         # Open database connection
         db = MySQLdb.connect(host="ingrex-lib.cbxixqiqoaj0.ap-northeast-1.rds.amazonaws.com", user="wangxin",
-                             passwd="tsinghua", db="ingrex",  charset="utf8")
+                             passwd="tsinghua", db="ingrex",  charset="utf8mb4")
         # prepare a cursor object using cursor() method
         cursor = db.cursor()
         print "Opened database successfully";
