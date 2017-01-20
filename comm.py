@@ -36,7 +36,6 @@ def main():
                 display = Display(visible=0, size=(800, 600))
                 display.start()
 
-            print "start"
             # used for generate debug log
             chromedriver = ""
             if platform.system() == "Windows":
@@ -48,7 +47,7 @@ def main():
             print platform.system()
 
             # Retrieve the agent info.
-            with open('AgentInfo.txt') as f:
+            with open('secrets.txt') as f:
                 lines = f.readlines()
             username = lines[0].replace("\n", "")
             password = lines[1].replace("\n", "")
@@ -56,7 +55,6 @@ def main():
             # create chrome driver
             # get the chrome webdriver:
             # https://sites.google.com/a/chromium.org/chromedriver/downloads
-            print "start1"
             print chromedriver
             # service_log_path = "{}/chromedriver.log".format(".")
             # service_args = ['--verbose']
@@ -64,10 +62,9 @@ def main():
             # driver = webdriver.Chrome(chromedriver,
             #                           service_args=service_args,
             #                           service_log_path=service_log_path)
-            driver = webdriver.PhantomJS("./phantomjs-2.1.1-linux-x86_64/bin/phantomjs")
-            # driver = webdriver.PhantomJS();
+            # driver = webdriver.PhantomJS("./phantomjs-2.1.1-linux-x86_64/bin/phantomjs")
+            driver = webdriver.PhantomJS();
             driver.set_window_size(1024, 768)
-            print "start2"
             driver.get('http://www.ingress.com/intel')
             print driver.title
 
