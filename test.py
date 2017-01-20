@@ -46,7 +46,7 @@ def main():
                 chromedriver = "./chromedriver_mac32"
 
             # Retrieve the agent info.
-            with open('AgentInfo.txt') as f:
+            with open('secrets.txt') as f:
                 lines = f.readlines()
             username = lines[0].replace("\n", "")
             password = lines[1].replace("\n", "")
