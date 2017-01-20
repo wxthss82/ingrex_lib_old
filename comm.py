@@ -6,8 +6,9 @@ import platform
 import ingrex
 import time
 import sys
+
 import sqlite3
-import MySQLdb
+# import MySQLdb
 
 from selenium import webdriver
 
@@ -66,9 +67,9 @@ def main():
             #                            service_log_path=service_log_path)
             # driver = webdriver.PhantomJS()
             # if platform.system == "Darwin":
-            #     driver = webdriver.PhantomJS()
+            driver = webdriver.PhantomJS()
             # elif platform.system == "Linux":
-            driver = webdriver.PhantomJS("./phantomjs-2.1.1-linux-x86_64/bin/phantomjs")
+            # driver = webdriver.PhantomJS("./phantomjs-2.1.1-linux-x86_64/bin/phantomjs")
             driver.set_window_size(1024, 768)
             driver.get('http://www.ingress.com/intel')
             print driver.title
@@ -128,17 +129,17 @@ def main():
         print "Opened database successfully";
 
         cursor.execute('''CREATE TABLE IF NOT EXISTS MESSAGE
-                (
-                    GUID TEXT NOT NULL,
-                    TIME DATETIME NOT NULL,
-                    PLAYER TINYTEXT NOT NULL,
-                    TEAM TINYTEXT NOT NULL,
-                    PORTALNAME TINYTEXT NOT NULL,
-                    PORTALADDRESS TINYTEXT NOT NULL,
-                    LAT BIGINT(50) NOT NULL,
-                    LNG BIGINT(50) NOT NULL,
-                    BODY TEXT NOT NULL
-                );''')
+            (
+                GUID TEXT NOT NULL,
+                TIME DATETIME NOT NULL,
+                PLAYER TINYTEXT NOT NULL,
+                TEAM TINYTEXT NOT NULL,
+                PORTALNAME TINYTEXT NOT NULL,
+                PORTALADDRESS TINYTEXT NOT NULL,
+                LAT MEDIUMTEXT NOT NULL,
+                LNG MEDIUMTEXT NOT NULL,
+                BODY TEXT NOT NULL
+            );''')
 
         mints = -1
 
@@ -154,8 +155,8 @@ def main():
                     # print(u'{} {}'.format(message.time, message.text.decode('unicode-escape')))
                     # insert into database
                     cursor.execute("INSERT INTO MESSAGE (GUID,TIME,PLAYER,TEAM,PORTALNAME,PORTALADDRESS,LAT,LNG,BODY) \
-                                 VALUES (%s,%s,%s,%s,%s,%s,%d,%d,%s)", (message.guid,
-                                                                  message.time,
+                                 VALUES (%s,%s,%s,%s,%s,%s,%l,%l,%s)", (message.guid,
+                                                                  message.time.strftime('%Y-%m-%d %H:%M:%S.%f'),
                                                                   message.player,
                                                                   message.team,
                                                                   message.portalname,
