@@ -156,7 +156,7 @@ def main():
                     # insert into database
                     cursor.execute("INSERT INTO MESSAGE VALUES (%s,%s,%s,%s,%s,%s,%l,%l,%s)",
                                                                  (message.guid,
-                                                                  message.time.strftime('%Y-%m-%d %H:%M:%S.%f'),
+                                                                  message.time.strftime('%%%Y-%%%m-%%%d %%%H:%%%M:%%%S.%%%f'),
                                                                   message.player,
                                                                   message.team,
                                                                   message.portalname,
