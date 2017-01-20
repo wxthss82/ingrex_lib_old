@@ -154,12 +154,8 @@ def main():
                     print(mints)
                     # print(u'{} {}'.format(message.time, message.text.decode('unicode-escape')))
                     # insert into database
-                    cursor.execute("INSERT INTO MESSAGE (GUID,PLAYER,TEAM,PORTALNAME,PORTALADDRESS,LAT,LNG,BODY) \
-                                 VALUES (%s,%s,%s,%s,%s,%l,%l,%s)", (message.guid,
-                                                                  message.player,
-                                                                  message.team,
-                                                                  message.portalname,
-                                                                  message.portaladdress,
+                    cursor.execute("INSERT INTO MESSAGE (GUID,LAT,LNG,BODY) \
+                                 VALUES (%s,%l,%l,%s)", (message.guid,
                                                                   message.lat,
                                                                   message.lng,
                                                                   message.text));
