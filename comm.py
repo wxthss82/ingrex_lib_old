@@ -127,15 +127,17 @@ def main():
         print "Opened database successfully";
 
         cursor.execute('''CREATE TABLE IF NOT EXISTS MESSAGE
-               (GUID TEXT PRIMARY KEY     NOT NULL,
-               TIME             DATETIME      NOT NULL,
-               PLAYER           TEXT      NOT NULL,
-               TEAM             TEXT      NOT NULL,
-               PORTALNAME       TEXT      NOT NULL,
-               PORTALADDRESS    TEXT      NOT NULL,
-               LAT              BIGINT      NOT NULL,
-               LNG              BIGINT      NOT NULL,
-               BODY             TEXT      NOT NULL);''')
+                (
+                    GUID TEXT NOT NULL,
+                    TIME DATETIME NOT NULL,
+                    PLAYER TINYTEXT NOT NULL,
+                    TEAM TINYTEXT NOT NULL,
+                    PORTALNAME TINYTEXT NOT NULL,
+                    PORTALADDRESS TINYTEXT NOT NULL,
+                    LAT BIGINT(50) NOT NULL,
+                    LNG BIGINT(50) NOT NULL,
+                    BODY TEXT NOT NULL
+                );''')
 
         mints = -1
 
