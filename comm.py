@@ -8,7 +8,7 @@ import time
 import sys
 
 import sqlite3
-# import MySQLdb
+import MySQLdb
 
 from selenium import webdriver
 
