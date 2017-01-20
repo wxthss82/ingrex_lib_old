@@ -180,8 +180,7 @@ def main():
                     traceback.print_exception(*exc_info)
                     del exc_info
                     break
-
-            db.close()
+                    db.close()
 
 
 
