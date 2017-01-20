@@ -121,7 +121,8 @@ def main():
             cookies = cookies.read().strip()
 
         # Open database connection
-        db = MySQLdb.connect("ingrex-lib.cbxixqiqoaj0.ap-northeast-1.rds.amazonaws.com", "wangxin", "tsinghua", "ingrex")
+        db = MySQLdb.connect(host="ingrex-lib.cbxixqiqoaj0.ap-northeast-1.rds.amazonaws.com", user="wangxin",
+                             passwd="tsinghua", db="ingrex",  charset="utf8")
         # prepare a cursor object using cursor() method
         cursor = db.cursor()
         print "Opened database successfully";
