@@ -5,6 +5,7 @@
 pip install pyvirtualdisplay
 pip install selenium
 pip install requests
+pip install pytz
 sudo apt-get install xvfb
 sudo apt-get install chromium-browser
 

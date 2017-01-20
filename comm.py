@@ -7,6 +7,7 @@ import ingrex
 import time
 import sys
 import sqlite3
+import MySQLdb
 
 from selenium import webdriver
 
@@ -119,12 +120,13 @@ def main():
         with open('cookies') as cookies:
             cookies = cookies.read().strip()
 
-        # create database
-        conn = sqlite3.connect('comm.db')
-
+        # Open database connection
+        db = MySQLdb.connect("ingrex-lib.cbxixqiqoaj0.ap-northeast-1.rds.amazonaws.com", "wangxin", "tsinghua", "MESSAGE")
+        # prepare a cursor object using cursor() method
+        cursor = db.cursor()
         print "Opened database successfully";
 
-        conn.execute('''CREATE TABLE IF NOT EXISTS MESSAGE
+        cursor.execute('''CREATE TABLE IF NOT EXISTS MESSAGE
                (GUID TEXT PRIMARY KEY     NOT NULL,
                TIME             DATETIME      NOT NULL,
                PLAYER           TEXT      NOT NULL,
@@ -148,7 +150,7 @@ def main():
                     print(mints)
                     # print(u'{} {}'.format(message.time, message.text.decode('unicode-escape')))
                     # insert into database
-                    conn.execute("INSERT INTO MESSAGE (GUID,TIME,PLAYER,TEAM,PORTALNAME,PORTALADDRESS,LAT,LNG,BODY) \
+                    cursor.execute("INSERT INTO MESSAGE (GUID,TIME,PLAYER,TEAM,PORTALNAME,PORTALADDRESS,LAT,LNG,BODY) \
                                  VALUES (?,?,?,?,?,?,?,?,?);""", (message.guid,
                                                                   message.time,
                                                                   message.player,
@@ -158,7 +160,7 @@ def main():
                                                                   message.lat,
                                                                   message.lng,
                                                                   message.text));
-                    conn.commit()
+                    db.commit()
 
                 time.sleep(2)
             except Exception, err:
@@ -175,7 +177,7 @@ def main():
                     del exc_info
                     break
 
-        conn.close()
+            db.close()
 
 
 
