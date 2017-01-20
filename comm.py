@@ -63,11 +63,11 @@ def main():
             #                           service_args=service_args,
             #
             #                            service_log_path=service_log_path)
-            driver = webdriver.PhantomJS()
-            if platform.system == "Darwin":
-                driver = webdriver.PhantomJS()
-            elif platform.system == "Linux":
-                driver = webdriver.PhantomJS("./phantomjs-2.1.1-linux-x86_64/bin/phantomjs")
+            # driver = webdriver.PhantomJS()
+            # if platform.system == "Darwin":
+            #     driver = webdriver.PhantomJS()
+            # elif platform.system == "Linux":
+            driver = webdriver.PhantomJS("./phantomjs-2.1.1-linux-x86_64/bin/phantomjs")
             driver.set_window_size(1024, 768)
             driver.get('http://www.ingress.com/intel')
             print driver.title
