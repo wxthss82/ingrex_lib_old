@@ -35,15 +35,15 @@ class Intel(object):
     def refresh_version(self):
         "refresh api version for request"
         s = requests.Session()
-        s.mount('https://', MyAdapter())
-        request = requests.get('https://www.ingress.com/intel', headers=self.headers)
+        s.mount('https://www.ingress.com/intel', MyAdapter())
+        request = requests.get('https://www.ingress.com/intel', headers=self.headers, verify=False)
         self.version = re.findall(r'gen_dashboard_(\w*)\.js', request.text)[0]
 
     def fetch(self, url, payload):
         "raw request with auto-retry and connection check function"
         payload['v'] = self.version
         s = requests.Session()
-        s.mount('https://', MyAdapter())
+        s.mount(url, MyAdapter())
         request = requests.post(url, data=json.dumps(payload), headers=self.headers)
         return request.json()['result']
 
