@@ -157,13 +157,13 @@ def main():
                     cursor.execute("INSERT INTO MESSAGE (GUID,TIME,PLAYER,TEAM,PORTALNAME,PORTALADDRESS,LAT,LNG,BODY) \
                                  VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)", (message.guid,
                                                                   message.time.strftime('%Y-%m-%d %H:%M:%S.%f'),
-                                                                  message.player,
-                                                                  message.team,
-                                                                  message.portalname,
-                                                                  message.portaladdress,
+                                                                  str(message.player).decode('unicode-escape'),
+                                                                  str(message.team).decode('unicode-escape'),
+                                                                  str(message.portalname).decode('unicode-escape'),
+                                                                  str(message.portaladdress).decode('unicode-escape'),
                                                                   message.lat,
                                                                   message.lng,
-                                                                  message.text));
+                                                                  str(message.text).decode('unicode-escape')));
                     db.commit()
 
                 time.sleep(2)
