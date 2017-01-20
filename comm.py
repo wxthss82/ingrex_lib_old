@@ -156,7 +156,7 @@ def main():
                     print(mints)
                     # print(u'{} {}'.format(message.time, message.text.decode('unicode-escape')))
                     # insert into database
-                    cursor.execute("INSERT INTO message (guid,time,player,team,portalname,portaladdress,lat,lng,body) \
+                    cursor.execute("INSERT INTO message (guid,time,player,team,portalname,portaladdress,lat,lng,message) \
                                  VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)", (message.guid,
                                                                   message.time.strftime('%Y-%m-%d %H:%M:%S.%f'),
                                                                   str(message.player).decode('unicode-escape'),
