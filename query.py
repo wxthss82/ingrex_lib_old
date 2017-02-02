@@ -206,7 +206,7 @@ def main():
 
 
 def queryPlayerLog(c, player):
-    c.execute("SELECT * FROM message WHERE player=? ORDER BY TIME DESC ", (player,))
+    c.execute("SELECT * FROM message WHERE player=? ORDER BY time DESC ", (player,))
     ret = ""
     i = 0
     for row in c.fetchmany(10):
@@ -217,9 +217,9 @@ def queryPlayerLog(c, player):
 
 def listplayer(c, faction ="ALL"):
     if (faction == "ALL"):
-        c.execute("SELECT player, team, COUNT(*) AS player_occurrence FROM (SELECT player, team  FROM  message WHERE TIME > (DATE_SUB(curdate(), INTERVAL 2 WEEK)))  AS A GROUP BY player ORDER BY COUNT(*) DESC;")
+        c.execute("SELECT player, team, COUNT(*) AS player_occurrence FROM (SELECT player, team  FROM  message WHERE time > (DATE_SUB(curdate(), INTERVAL 2 WEEK)))  AS A GROUP BY player ORDER BY COUNT(*) DESC;")
     else:
-        c.execute("""SELECT player, COUNT(player) AS player_occurrence FROM (SELECT player, team FROM message WHERE team='%s'  and TIME > (DATE_SUB(curdate(), INTERVAL 2 WEEK))) AS A GROUP BY player ORDER BY player_occurrence DESC;""" % faction)
+        c.execute("""SELECT player, COUNT(player) AS player_occurrence FROM (SELECT player, team FROM message WHERE team='%s'  and time > (DATE_SUB(curdate(), INTERVAL 2 WEEK))) AS A GROUP BY player ORDER BY player_occurrence DESC;""" % faction)
     i = 0
     ret = ""
     for row in c.fetchall():
@@ -253,7 +253,7 @@ def listfrackerowner(c):
 
 def listplayerlog(c, player):
     c.execute(
-        "SELECT TIME, message FROM message WHERE player='%s' ORDER BY TIME DESC" % player)
+        "SELECT time, message FROM message WHERE player='%s' ORDER BY time DESC" % player)
     ret = ""
     for row in c.fetchall():
         ret += str(row)[2:-1].decode('unicode-escape') + "\n"
