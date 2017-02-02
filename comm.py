@@ -125,7 +125,12 @@ def main():
         db = MySQLdb.connect(host="ingrex-lib.cbxixqiqoaj0.ap-northeast-1.rds.amazonaws.com", user="wangxin",
                              passwd="tsinghua", db="ingrex",  charset="utf8mb4")
         # prepare a cursor object using cursor() method
+        db.set_character_set('utf8')
+
         cursor = db.cursor()
+        cursor.execute('SET NAMES utf8;')
+        cursor.execute('SET CHARACTER SET utf8;')
+        cursor.execute('SET character_set_connection=utf8;')
         print "Opened database successfully";
 
         cursor.execute('''CREATE TABLE IF NOT EXISTS `message` (
