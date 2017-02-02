@@ -167,7 +167,7 @@ def main():
                                                                   message.time.strftime('%Y-%m-%d %H:%M:%S.%f'),
                                                                   str(message.player).decode('unicode-escape'),
                                                                   str(message.team).decode('unicode-escape'),
-                                                                  str(message.portalname).decode('unicode-escape'),
+                                                                  message.portalname,
                                                                   str(message.portaladdress).decode('unicode-escape'),
                                                                   message.lat,
                                                                   message.lng,
