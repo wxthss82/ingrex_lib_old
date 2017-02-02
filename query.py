@@ -2,6 +2,7 @@ import logging
 import telegram
 import sys
 import MySQLdb
+import time
 
 
 maxMessageLength = 1200 + 1
@@ -120,10 +121,8 @@ def listFrackerOwner(bot, update):
         i += maxSingleMessageLength
 
 def listPlayerLog(bot, update, args):
-    conv = MySQLdb.converters.conversions.copy()
-    conv[10] = str
     db = MySQLdb.connect(host="ingrex-lib.cbxixqiqoaj0.ap-northeast-1.rds.amazonaws.com", user="wangxin",
-                         passwd="tsinghua", db="ingrex", charset="utf8mb4", conv=conv)
+                         passwd="tsinghua", db="ingrex", charset="utf8mb4")
     # prepare a cursor object using cursor() method
     db.set_character_set('utf8')
 
@@ -138,7 +137,6 @@ def listPlayerLog(bot, update, args):
         str = ret[i:i+maxSingleMessageLength]
         bot.sendMessage(update.message.chat_id, text=str)
         i += maxSingleMessageLength
-
 
 def main():
     reload(sys)
@@ -253,9 +251,14 @@ def listfrackerowner(c):
             break
     return ret
 
+
+def convertSQLDateTimeToTimestamp(value):
+    return time.mktime(time.strptime(value, '%Y-%m-%d %H:%M:%S'))
+
+
 def listplayerlog(c, player):
     c.execute(
-        "SELECT time, message FROM message WHERE player='%s' ORDER BY time DESC" % player)
+        "SELECT str(time), message FROM message WHERE player='%s' ORDER BY time DESC" % player)
     ret = ""
     for row in c.fetchall():
         ret += row + "\n"
