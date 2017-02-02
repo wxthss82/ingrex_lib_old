@@ -217,9 +217,9 @@ def queryPlayerLog(c, player):
 
 def listplayer(c, faction ="ALL"):
     if (faction == "ALL"):
-        c.execute("SELECT player, team, COUNT(*) AS player_occurrence FROM (SELECT player, team  FROM  message WHERE TIME > (DATE_SUB(curdate(), INTERVAL 2 WEEK)) GROUP BY player ORDER BY COUNT(*) DESC;")
+        c.execute("SELECT player, team, COUNT(*) AS player_occurrence FROM (SELECT player, team  FROM  message WHERE TIME > (DATE_SUB(curdate(), INTERVAL 2 WEEK))) GROUP BY player ORDER BY COUNT(*) DESC;")
     else:
-        c.execute("SELECT player, COUNT(player) AS player_occurrence FROM (SELECT player, team FROM message WHERE team=? and TIME > (DATE_SUB(curdate(), INTERVAL 2 WEEK))  GROUP BY player ORDER BY player_occurrence DESC", (faction,))
+        c.execute("SELECT player, COUNT(player) AS player_occurrence FROM (SELECT player, team FROM message WHERE team=? and TIME > (DATE_SUB(curdate(), INTERVAL 2 WEEK)))  GROUP BY player ORDER BY player_occurrence DESC", (faction,))
     i = 0
     ret = ""
     for row in c.fetchall():
