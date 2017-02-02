@@ -233,7 +233,7 @@ def listplayer(c, faction ="ALL"):
 def listfrackerportal(c):
     reload(sys)
     sys.setdefaultencoding('utf-8')
-    c.execute("SELECT portalname, COUNT(portalname) as freq FROM (SELECT portalname FROM message WHERE message LIKE '%fracker%') GROUP BY portalname ORDER BY freq DESC")
+    c.execute("SELECT portalname, COUNT(portalname) as freq FROM (SELECT portalname FROM message WHERE message LIKE '%fracker%') AS A GROUP BY portalname ORDER BY freq DESC")
     ret = ""
     for row in c.fetchall():
         ret += str(row)[2:-1].replace("\'", "").decode('unicode-escape') + "\n"
@@ -243,7 +243,7 @@ def listfrackerportal(c):
 
 
 def listfrackerowner(c):
-    c.execute("SELECT player, COUNT(player) as freq FROM (SELECT player FROM message WHERE message LIKE '%fracker%') GROUP BY player ORDER BY freq DESC")
+    c.execute("SELECT player, COUNT(player) as freq FROM (SELECT player FROM message WHERE message LIKE '%fracker%') AS A GROUP BY player ORDER BY freq DESC")
     ret = ""
     for row in c.fetchall():
         ret += str(row)[2:-1].replace("\'", "") + "\n"
