@@ -253,7 +253,7 @@ def listfrackerowner(c):
 
 def listplayerlog(c, player):
     c.execute(
-        "SELECT TIME, message FROM message WHERE player='%s' COLLATE NOCASE ORDER BY TIME DESC" % player)
+        "SELECT TIME, message FROM message WHERE player='%s' ORDER BY TIME DESC" % player)
     ret = ""
     for row in c.fetchall():
         ret += str(row)[2:-1].decode('unicode-escape') + "\n"
