@@ -2,7 +2,6 @@ import logging
 import telegram
 import sys
 import MySQLdb
-import time
 
 
 maxMessageLength = 1200 + 1
@@ -138,6 +137,7 @@ def listPlayerLog(bot, update, args):
         bot.sendMessage(update.message.chat_id, text=str)
         i += maxSingleMessageLength
 
+
 def main():
     reload(sys)
     sys.setdefaultencoding('utf-8')
@@ -251,17 +251,12 @@ def listfrackerowner(c):
             break
     return ret
 
-
-def convertSQLDateTimeToTimestamp(value):
-    return time.mktime(time.strptime(value, '%Y-%m-%d %H:%M:%S'))
-
-
 def listplayerlog(c, player):
     c.execute(
         "SELECT time, message FROM message WHERE player='%s' ORDER BY time DESC" % player)
-    ret = "",
+    ret = ""
     for row in c.fetchall():
-        ret += row + "\n"
+        ret += str(row) + "\n"
         if ret.__sizeof__() > maxLogMessageLength:
             break
     return ret
