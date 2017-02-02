@@ -259,7 +259,7 @@ def convertSQLDateTimeToTimestamp(value):
 def listplayerlog(c, player):
     c.execute(
         "SELECT time, message FROM message WHERE player='%s' ORDER BY time DESC" % player)
-    ret = ""
+    ret = "",
     for row in c.fetchall():
         ret += row + "\n"
         if ret.__sizeof__() > maxLogMessageLength:
