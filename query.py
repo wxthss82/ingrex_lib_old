@@ -1,7 +1,8 @@
 import logging
-import sqlite3
 import telegram
 import sys
+import MySQLdb
+
 
 maxMessageLength = 1200 + 1
 maxLogMessageLength = 2400 + 1
@@ -38,14 +39,28 @@ def error(bot, update, error):
     logger.warn('Update "%s" caused error "%s"' % (update, error))
 
 def listPlayer(bot, update):
-    conn = sqlite3.connect(db_name)
-    c = conn.cursor()
+    db = MySQLdb.connect(host="ingrex-lib.cbxixqiqoaj0.ap-northeast-1.rds.amazonaws.com", user="wangxin",
+                         passwd="tsinghua", db="ingrex", charset="utf8mb4")
+    # prepare a cursor object using cursor() method
+    db.set_character_set('utf8')
+
+    c = db.cursor()
+    c.execute('SET NAMES utf8;')
+    c.execute('SET CHARACTER SET utf8;')
+    c.execute('SET character_set_connection=utf8;')
     ret = listplayer(c)
     bot.sendMessage(update.message.chat_id, text=ret)
 
 def listPlayerRes(bot, update):
-    conn = sqlite3.connect(db_name)
-    c = conn.cursor()
+    db = MySQLdb.connect(host="ingrex-lib.cbxixqiqoaj0.ap-northeast-1.rds.amazonaws.com", user="wangxin",
+                         passwd="tsinghua", db="ingrex", charset="utf8mb4")
+    # prepare a cursor object using cursor() method
+    db.set_character_set('utf8')
+
+    c = db.cursor()
+    c.execute('SET NAMES utf8;')
+    c.execute('SET CHARACTER SET utf8;')
+    c.execute('SET character_set_connection=utf8;')
     ret = listplayer(c, "RESISTANCE")
     i = 0
     while i + maxSingleMessageLength < maxMessageLength:
@@ -54,8 +69,15 @@ def listPlayerRes(bot, update):
         i += maxSingleMessageLength
 
 def listPlayerEnl(bot, update):
-    conn = sqlite3.connect(db_name)
-    c = conn.cursor()
+    db = MySQLdb.connect(host="ingrex-lib.cbxixqiqoaj0.ap-northeast-1.rds.amazonaws.com", user="wangxin",
+                         passwd="tsinghua", db="ingrex", charset="utf8mb4")
+    # prepare a cursor object using cursor() method
+    db.set_character_set('utf8')
+
+    c = db.cursor()
+    c.execute('SET NAMES utf8;')
+    c.execute('SET CHARACTER SET utf8;')
+    c.execute('SET character_set_connection=utf8;')
     ret = listplayer(c, "ENLIGHTENED")
     i = 0
     while i + maxSingleMessageLength < maxMessageLength:
@@ -64,8 +86,15 @@ def listPlayerEnl(bot, update):
         i += maxSingleMessageLength
 
 def listFrackerPortal(bot, update):
-    conn = sqlite3.connect(db_name)
-    c = conn.cursor()
+    db = MySQLdb.connect(host="ingrex-lib.cbxixqiqoaj0.ap-northeast-1.rds.amazonaws.com", user="wangxin",
+                         passwd="tsinghua", db="ingrex", charset="utf8mb4")
+    # prepare a cursor object using cursor() method
+    db.set_character_set('utf8')
+
+    c = db.cursor()
+    c.execute('SET NAMES utf8;')
+    c.execute('SET CHARACTER SET utf8;')
+    c.execute('SET character_set_connection=utf8;')
     ret = listfrackerportal(c)
     i = 0
     while i + maxSingleMessageLength < maxMessageLength:
@@ -74,8 +103,15 @@ def listFrackerPortal(bot, update):
         i += maxSingleMessageLength
 
 def listFrackerOwner(bot, update):
-    conn = sqlite3.connect(db_name)
-    c = conn.cursor()
+    db = MySQLdb.connect(host="ingrex-lib.cbxixqiqoaj0.ap-northeast-1.rds.amazonaws.com", user="wangxin",
+                         passwd="tsinghua", db="ingrex", charset="utf8mb4")
+    # prepare a cursor object using cursor() method
+    db.set_character_set('utf8')
+
+    c = db.cursor()
+    c.execute('SET NAMES utf8;')
+    c.execute('SET CHARACTER SET utf8;')
+    c.execute('SET character_set_connection=utf8;')
     ret = listfrackerowner(c)
     i = 0
     while i + maxSingleMessageLength < maxMessageLength:
@@ -84,8 +120,15 @@ def listFrackerOwner(bot, update):
         i += maxSingleMessageLength
 
 def listPlayerLog(bot, update, args):
-    conn = sqlite3.connect(db_name)
-    c = conn.cursor()
+    db = MySQLdb.connect(host="ingrex-lib.cbxixqiqoaj0.ap-northeast-1.rds.amazonaws.com", user="wangxin",
+                         passwd="tsinghua", db="ingrex", charset="utf8mb4")
+    # prepare a cursor object using cursor() method
+    db.set_character_set('utf8')
+
+    c = db.cursor()
+    c.execute('SET NAMES utf8;')
+    c.execute('SET CHARACTER SET utf8;')
+    c.execute('SET character_set_connection=utf8;')
     print ' '.join(args)
     ret = listplayerlog(c, ' '.join(args))
     i = 0
@@ -98,8 +141,18 @@ def listPlayerLog(bot, update, args):
 def main():
     reload(sys)
     sys.setdefaultencoding('utf-8')
-    conn = sqlite3.connect(db_name)
-    c = conn.cursor()
+
+    # Open database connection
+    db = MySQLdb.connect(host="ingrex-lib.cbxixqiqoaj0.ap-northeast-1.rds.amazonaws.com", user="wangxin",
+                         passwd="tsinghua", db="ingrex", charset="utf8mb4")
+    # prepare a cursor object using cursor() method
+    db.set_character_set('utf8')
+
+    c = db.cursor()
+    c.execute('SET NAMES utf8;')
+    c.execute('SET CHARACTER SET utf8;')
+    c.execute('SET character_set_connection=utf8;')
+
     print listplayer(c)
     print listplayer(c, 'ENLIGHTENED')
     print listplayer(c, 'RESISTANCE')
@@ -153,7 +206,7 @@ def main():
 
 
 def queryPlayerLog(c, player):
-    c.execute("SELECT * FROM MESSAGE WHERE PLAYER=? ORDER BY TIME DESC ", (player,))
+    c.execute("SELECT * FROM message WHERE player=? ORDER BY TIME DESC ", (player,))
     ret = ""
     i = 0
     for row in c.fetchmany(10):
@@ -164,9 +217,9 @@ def queryPlayerLog(c, player):
 
 def listplayer(c, faction ="ALL"):
     if (faction == "ALL"):
-        c.execute("SELECT PLAYER, TEAM, COUNT(*) AS player_occurrence FROM (SELECT PLAYER, TEAM  FROM  MESSAGE WHERE TIME > (SELECT DATETIME('now', '-14 day'))) GROUP BY PLAYER ORDER BY COUNT(*) DESC;")
+        c.execute("SELECT player, team, COUNT(*) AS player_occurrence FROM (SELECT player, team  FROM  message WHERE TIME > (SELECT DATETIME('now', '-14 day'))) GROUP BY player ORDER BY COUNT(*) DESC;")
     else:
-        c.execute("SELECT PLAYER, COUNT(PLAYER) AS player_occurrence FROM (SELECT PLAYER, TEAM FROM MESSAGE WHERE TEAM=? and TIME > (SELECT DATETIME('now', '-14 day')))  GROUP BY PLAYER ORDER BY player_occurrence DESC", (faction,))
+        c.execute("SELECT player, COUNT(player) AS player_occurrence FROM (SELECT player, team FROM message WHERE team=? and TIME > (SELECT DATETIME('now', '-14 day')))  GROUP BY player ORDER BY player_occurrence DESC", (faction,))
     i = 0
     ret = ""
     for row in c.fetchall():
@@ -180,7 +233,7 @@ def listplayer(c, faction ="ALL"):
 def listfrackerportal(c):
     reload(sys)
     sys.setdefaultencoding('utf-8')
-    c.execute("SELECT PORTALNAME, COUNT(PORTALNAME) as freq FROM (SELECT PORTALNAME FROM MESSAGE WHERE BODY LIKE '%fracker%') GROUP BY PORTALNAME ORDER BY freq DESC")
+    c.execute("SELECT portalname, COUNT(portalname) as freq FROM (SELECT portalname FROM message WHERE message LIKE '%fracker%') GROUP BY portalname ORDER BY freq DESC")
     ret = ""
     for row in c.fetchall():
         ret += str(row)[2:-1].replace("\'", "").decode('unicode-escape') + "\n"
@@ -190,7 +243,7 @@ def listfrackerportal(c):
 
 
 def listfrackerowner(c):
-    c.execute("SELECT PLAYER, COUNT(PLAYER) as freq FROM (SELECT PLAYER FROM MESSAGE WHERE BODY LIKE '%fracker%') GROUP BY PLAYER ORDER BY freq DESC")
+    c.execute("SELECT player, COUNT(player) as freq FROM (SELECT player FROM message WHERE message LIKE '%fracker%') GROUP BY player ORDER BY freq DESC")
     ret = ""
     for row in c.fetchall():
         ret += str(row)[2:-1].replace("\'", "") + "\n"
@@ -200,7 +253,7 @@ def listfrackerowner(c):
 
 def listplayerlog(c, player):
     c.execute(
-        "SELECT TIME, BODY FROM MESSAGE WHERE PLAYER=? COLLATE NOCASE ORDER BY TIME DESC", (player, ))
+        "SELECT TIME, message FROM message WHERE player=? COLLATE NOCASE ORDER BY TIME DESC", (player, ))
     ret = ""
     for row in c.fetchall():
         ret += str(row)[2:-1].decode('unicode-escape') + "\n"

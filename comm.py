@@ -7,7 +7,6 @@ import ingrex
 import time
 import sys
 
-import sqlite3
 import MySQLdb
 
 from selenium import webdriver
@@ -165,13 +164,13 @@ def main():
                     cursor.execute("INSERT INTO message (guid,time,player,team,portalname,portaladdress,lat,lng,message) \
                                  VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)", (message.guid,
                                                                   message.time.strftime('%Y-%m-%d %H:%M:%S.%f'),
-                                                                  str(message.player).decode('unicode-escape'),
-                                                                  str(message.team).decode('unicode-escape'),
+                                                                  message.player,
+                                                                  message.team,
                                                                   message.portalname,
-                                                                  str(message.portaladdress).decode('unicode-escape'),
+                                                                  message.portaladdress,
                                                                   message.lat,
                                                                   message.lng,
-                                                                  str(message.text).decode('unicode-escape')));
+                                                                  message.text));
                     db.commit()
 
                 time.sleep(2)
