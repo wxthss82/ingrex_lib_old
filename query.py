@@ -256,7 +256,7 @@ def listplayerlog(c, player):
         "SELECT CAST(time AS CHAR), message FROM message WHERE player='%s' ORDER BY time DESC" % player)
     ret = ""
     for row in c.fetchall():
-        ret += str(row) + "\n"
+        ret += str(row).decode('unicode-escape') + "\n"
         if ret.__sizeof__() > maxLogMessageLength:
             break
     return ret
