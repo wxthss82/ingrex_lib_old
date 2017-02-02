@@ -253,7 +253,7 @@ def listfrackerowner(c):
 
 def listplayerlog(c, player):
     c.execute(
-        "SELECT time, message FROM message WHERE player='%s' ORDER BY time DESC" % player)
+        "SELECT CAST(time AS CHAR), message FROM message WHERE player='%s' ORDER BY time DESC" % player)
     ret = ""
     for row in c.fetchall():
         ret += str(row) + "\n"
