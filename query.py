@@ -120,8 +120,10 @@ def listFrackerOwner(bot, update):
         i += maxSingleMessageLength
 
 def listPlayerLog(bot, update, args):
+    conv = MySQLdb.converters.conversions.copy()
+    conv[10] = str
     db = MySQLdb.connect(host="ingrex-lib.cbxixqiqoaj0.ap-northeast-1.rds.amazonaws.com", user="wangxin",
-                         passwd="tsinghua", db="ingrex", charset="utf8mb4")
+                         passwd="tsinghua", db="ingrex", charset="utf8mb4", conv=conv)
     # prepare a cursor object using cursor() method
     db.set_character_set('utf8')
 
@@ -256,7 +258,7 @@ def listplayerlog(c, player):
         "SELECT time, message FROM message WHERE player='%s' ORDER BY time DESC" % player)
     ret = ""
     for row in c.fetchall():
-        ret += str(row)[2:-1].decode('unicode-escape') + "\n"
+        ret += row + "\n"
         if ret.__sizeof__() > maxLogMessageLength:
             break
     return ret
