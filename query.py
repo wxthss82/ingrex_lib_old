@@ -258,7 +258,7 @@ def convertSQLDateTimeToTimestamp(value):
 
 def listplayerlog(c, player):
     c.execute(
-        "SELECT str(time), message FROM message WHERE player='%s' ORDER BY time DESC" % player)
+        "SELECT time, message FROM message WHERE player='%s' ORDER BY time DESC" % player)
     ret = ""
     for row in c.fetchall():
         ret += row + "\n"
