@@ -15,8 +15,6 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 
-db_name = "comm.db"
-
 def start(bot, update):
     bot.sendMessage(update.message.chat_id, text='Hi!')
 
