@@ -38,14 +38,14 @@ def main():
                 display.start()
 
             # used for generate debug log
-            chromedriver = ""
-            if platform.system() == "Windows":
-                chromedriver = "./chromedriver_win32.exe"
-            elif platform.system() == "Linux":
-                chromedriver = "./chromedriver_linux64"
-            elif platform.system() == "Darwin":
-                chromedriver = "./chromedriver_mac32"
-            print platform.system()
+            # chromedriver = ""
+            # if platform.system() == "Windows":
+            #     chromedriver = "./chromedriver_win32.exe"
+            # elif platform.system() == "Linux":
+            #     chromedriver = "./chromedriver_linux64"
+            # elif platform.system() == "Darwin":
+            #     chromedriver = "./chromedriver_mac32"
+            # print platform.system()
 
             # Retrieve the agent info.
             with open('secrets.txt') as f:
@@ -56,19 +56,19 @@ def main():
             # create chrome driver
             # get the chrome webdriver:
             # https://sites.google.com/a/chromium.org/chromedriver/downloads
-            print chromedriver
+            # print chromedriver
             # service_log_path = "{}/chromedriver.log".format(".")
             # service_args = ['--verbose']
+
             # driver = webdriver.Chrome("./chromedriver_linux64")
             # driver = webdriver.Chrome(chromedriver,
             #                           service_args=service_args,
             #
             #                            service_log_path=service_log_path)
-            # driver = webdriver.PhantomJS()
             # if platform.system == "Darwin":
-            # driver = webdriver.PhantomJS()
-            # elif platform.system == "Linux":
-            driver = webdriver.PhantomJS("./phantomjs-2.1.1-linux-x86_64/bin/phantomjs")
+            driver = webdriver.PhantomJS()
+            if platform.system == "Linux":
+                driver = webdriver.PhantomJS("./phantomjs-2.1.1-linux-x86_64/bin/phantomjs")
             driver.set_window_size(1024, 768)
             driver.get('http://www.ingress.com/intel')
             print driver.title
@@ -115,7 +115,7 @@ def main():
             print "exception"
             if platform.system() == "Linux":
                 display.stop()
-            driver.quit()
+            # driver.quit()
 
         with open('cookies') as cookies:
             cookies = cookies.read().strip()
